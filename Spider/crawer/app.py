@@ -76,14 +76,15 @@ opener.addheaders.append(('Host', 'lf.snssdk.com'))
 opener.addheaders.append(('Connection', 'Keep-Alive'))
 # opener.addheaders.append(('Accept-Encoding','gzip'))
 opener.addheaders.append(('Accept-Language', 'zh-Hans-CN'))
-result=[]
+result = []
+i = 0
 while True:
     result1 = opener.open(testUrl)
     data1 = result1.read()
     json_data = json.loads(data1)
     json_result = json_data["data"]
     for json_content in json_result:
-        if  json.loads(json_content["content"]).has_key("tag_id"):
+        if json.loads(json_content["content"]).has_key("tag_id"):
             tag_id = json.loads(json_content["content"])["tag_id"]
             itemUrl = text1Url + str(json.loads(json_content["content"])["tag_id"]) + "/" + str(
                 json.loads(json_content["content"])["item_id"]) + text2Url
@@ -111,14 +112,18 @@ while True:
             "article_url") else "";
         display_url = json.loads(json_content["content"])["display_url"] if json.loads(json_content["content"]).has_key(
             "display_url") else "";
-        image_list = str(json.loads(json_content["content"])["image_list"] )if json.loads(json_content["content"]).has_key(
+        image_list = str(json.loads(json_content["content"])["image_list"]) if json.loads(
+            json_content["content"]).has_key(
             "image_list") else "";
         print tag_id, group_id, item_id, title, keywords, abstract, content, source, article_url, display_url, image_list
-        content_list=[title, keywords, abstract, content, source, article_url, display_url, image_list]
+        content_list = [title, keywords, abstract, content, source, article_url, display_url, image_list]
         result_list = []
         if content_list not in result:
             result.append(content_list)
             result_list.append(content_list)
+        i += 1
+        print "目前正在采集第" + str(i) + "条数据"
+        save.save(list, "qwz")
         save.save(result_list, "qwz")
 
 
