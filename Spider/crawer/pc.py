@@ -4,7 +4,7 @@ import json
 import re
 from bs4 import BeautifulSoup
 import save
-
+import MySQLdb as mysql
 
 def get_pc_data(url):
     headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -23,6 +23,7 @@ def get_pc_data(url):
 host = "https://m.toutiao.com/list/?tag=news_regimen&ac=wap&count=20&format=json_raw&as=A1C559016B3EFF1&cp=591B9EDFFF61DE1&max_behot_time=1495000323";
 result = []
 i = 0
+png={};
 while True:
     data = get_pc_data(host)
     if data <> "":
@@ -35,12 +36,30 @@ while True:
                     r = requests.get(itemUrl)
                     html = r.content
                     soup = BeautifulSoup(html)
-                    title = soup.find_all(class_=re.compile("article-title"))[0].text
-                    content = soup.find_all(class_=re.compile("article-content"))[0].text
-                    # soup_1=soup.find_all(attrs={"class": "article-content"})[0]
-                    content = title + "\n" + content
+                    pstr=""
+                    if len(soup.find_all(id="article-main"))>0:
+                        for pp in soup.find_all(id="article-main")[0].find_all("p"):
+                             pstr+="\n"+str(pp)
+                             if len(pp.find_all("img"))>0:
+                                 url=pp.find_all("img")[0]["src"]
+                                 r=requests.get(url)
+                                 img=[]
+                                 img.append([url,r.content])
+                                 save.save_img(img,"toutiao_pc_img")
+                                 # png[url]=r.content
+                                 # file="d://test//"+str(i+1)+".png"
+                                 # print file
+                                 # f = open(file, 'wb')
+                                 # f.write(r.content)
+                                 # f.close()
+                        title = soup.find_all(class_=re.compile("article-title"))[0].text
+                        content = soup.find_all(class_=re.compile("article-content"))[0].text
+                        # soup_1=soup.find_all(attrs={"class": "article-content"})[0]
+                        content = title + "\n" + content
+                        contents=pstr
                 else:
                     content = ""
+                    contents=""
                 group_id = d["group_id"] if d.has_key(
                     "group_id") else "";
                 item_id = d["item_id"] if d.has_key(
@@ -59,6 +78,7 @@ while True:
                     "display_url") else "";
                 image_list = str(d["image_list"]) if d.has_key("image_list") else "";
                 result.append(d["title"])
+                list.append([title, keywords, abstract, content, source, article_url, display_url, image_list,contents])
                 i += 1
                 print "目前正在采集第" + str(i) + "条数据"
-                save.save(list, "qwz")
+                save.save_text(list, "toutiao_pc")

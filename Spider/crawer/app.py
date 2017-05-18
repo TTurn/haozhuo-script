@@ -9,7 +9,7 @@ from cookielib import CookieJar
 import json
 from bs4 import BeautifulSoup
 import save
-
+import re
 ''' 读Json数据 '''
 
 # def fetch_data(json_data):
@@ -84,47 +84,65 @@ while True:
     json_data = json.loads(data1)
     json_result = json_data["data"]
     for json_content in json_result:
-        if json.loads(json_content["content"]).has_key("tag_id"):
-            tag_id = json.loads(json_content["content"])["tag_id"]
-            itemUrl = text1Url + str(json.loads(json_content["content"])["tag_id"]) + "/" + str(
-                json.loads(json_content["content"])["item_id"]) + text2Url
-            result2 = opener.open(itemUrl)
-            data2 = result2.read()
-            html = json.loads(data2)["data"]["content"]
-            soup = BeautifulSoup(html)
-            content = soup.text
-        else:
-            content = ""
-            tag_id = "";
-        group_id = json.loads(json_content["content"])["group_id"] if json.loads(json_content["content"]).has_key(
-            "group_id") else "";
-        item_id = json.loads(json_content["content"])["item_id"] if json.loads(json_content["content"]).has_key(
-            "item_id") else "";
         title = json.loads(json_content["content"])["title"] if json.loads(json_content["content"]).has_key(
             "title") else "";
-        keywords = json.loads(json_content["content"])["keywords"] if json.loads(json_content["content"]).has_key(
-            "keywords") else "";
-        abstract = json.loads(json_content["content"])["abstract"] if json.loads(json_content["content"]).has_key(
-            "abstract") else "";
-        source = json.loads(json_content["content"])["source"] if json.loads(json_content["content"]).has_key(
-            "source") else "";
-        article_url = json.loads(json_content["content"])["article_url"] if json.loads(json_content["content"]).has_key(
-            "article_url") else "";
-        display_url = json.loads(json_content["content"])["display_url"] if json.loads(json_content["content"]).has_key(
-            "display_url") else "";
-        image_list = str(json.loads(json_content["content"])["image_list"]) if json.loads(
-            json_content["content"]).has_key(
-            "image_list") else "";
-        print tag_id, group_id, item_id, title, keywords, abstract, content, source, article_url, display_url, image_list
-        content_list = [title, keywords, abstract, content, source, article_url, display_url, image_list]
-        result_list = []
-        if content_list not in result:
-            result.append(content_list)
+        if (title not in result) & (title<>""):
+            if json.loads(json_content["content"]).has_key("display_url"):
+                display_url = json.loads(json_content["content"])["display_url"]
+                # itemUrl = text1Url + str(json.loads(json_content["content"])["tag_id"]) + "/" + str(
+                #     json.loads(json_content["content"])["item_id"]) + text2Url
+                print display_url
+                result2 = opener.open(display_url)
+                html= result2.read()
+                soup = BeautifulSoup(html)
+                pstr = ""
+                if len(soup.find_all(id="article-main")) > 0:
+                    for pp in soup.find_all(id="article-main")[0].find_all("p"):
+                        pstr += "\n" + str(pp)
+                        if len(pp.find_all("img")) > 0:
+                            url = pp.find_all("img")[0]["src"]
+                            r = requests.get(url)
+                            img = []
+                            img.append([url, r.content])
+                            save.save_img(img, "toutiao_app_img")
+                            # png[url]=r.content
+                            # file="d://test//"+str(i+1)+".png"
+                            # print file
+                            # f = open(file, 'wb')
+                            # f.write(r.content)
+                            # f.close()
+                    title = soup.find_all(class_=re.compile("article-title"))[0].text
+                    content = soup.find_all(class_=re.compile("article-content"))[0].text
+                    # soup_1=soup.find_all(attrs={"class": "article-content"})[0]
+                    content = title + "\n" + content
+                    contents = pstr
+            else:
+                content = ""
+                contents = ""
+            group_id = json.loads(json_content["content"])["group_id"] if json.loads(json_content["content"]).has_key(
+                "group_id") else "";
+            item_id = json.loads(json_content["content"])["item_id"] if json.loads(json_content["content"]).has_key(
+                "item_id") else "";
+            keywords = json.loads(json_content["content"])["keywords"] if json.loads(json_content["content"]).has_key(
+                "keywords") else "";
+            abstract = json.loads(json_content["content"])["abstract"] if json.loads(json_content["content"]).has_key(
+                "abstract") else "";
+            source = json.loads(json_content["content"])["source"] if json.loads(json_content["content"]).has_key(
+                "source") else "";
+            article_url = json.loads(json_content["content"])["article_url"] if json.loads(json_content["content"]).has_key(
+                "article_url") else "";
+            display_url = json.loads(json_content["content"])["display_url"] if json.loads(json_content["content"]).has_key(
+                "display_url") else "";
+            image_list = str(json.loads(json_content["content"])["image_list"]) if json.loads(
+                json_content["content"]).has_key(
+                "image_list") else "";
+            content_list = [title, keywords, abstract, content, source, article_url, display_url, image_list,contents]
+            result_list = []
+            result.append(title)
             result_list.append(content_list)
-        i += 1
-        print "目前正在采集第" + str(i) + "条数据"
-        save.save(list, "qwz")
-        save.save(result_list, "qwz")
+            i += 1
+            print "目前正在采集第" + str(i) + "条数据"
+            save.save_text(result_list, "toutiao_app")
 
 
 
