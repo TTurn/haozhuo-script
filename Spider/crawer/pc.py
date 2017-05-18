@@ -25,60 +25,65 @@ result = []
 i = 0
 png={};
 while True:
-    data = get_pc_data(host)
-    if data <> "":
-        data1 = json.loads(data)
-        for d in data1["data"]:
-            if d["title"] not in result:
-                list = [];
-                if d.has_key("group_id"):
-                    itemUrl = "http://www.toutiao.com/a" + str(d["group_id"])
-                    r = requests.get(itemUrl)
-                    html = r.content
-                    soup = BeautifulSoup(html)
-                    pstr=""
-                    if len(soup.find_all(id="article-main"))>0:
-                        for pp in soup.find_all(id="article-main")[0].find_all("p"):
-                             pstr+="\n"+str(pp)
-                             if len(pp.find_all("img"))>0:
-                                 url=pp.find_all("img")[0]["src"]
-                                 r=requests.get(url)
-                                 img=[]
-                                 img.append([url,r.content])
-                                 save.save_img(img,"toutiao_pc_img")
-                                 # png[url]=r.content
-                                 # file="d://test//"+str(i+1)+".png"
-                                 # print file
-                                 # f = open(file, 'wb')
-                                 # f.write(r.content)
-                                 # f.close()
-                        title = soup.find_all(class_=re.compile("article-title"))[0].text
-                        content = soup.find_all(class_=re.compile("article-content"))[0].text
-                        # soup_1=soup.find_all(attrs={"class": "article-content"})[0]
-                        content = title + "\n" + content
-                        contents=pstr
-                else:
-                    content = ""
-                    contents=""
-                group_id = d["group_id"] if d.has_key(
-                    "group_id") else "";
-                item_id = d["item_id"] if d.has_key(
-                    "item_id") else "";
-                title = d["title"] if d.has_key(
-                    "title") else "";
-                keywords = d["keywords"] if d.has_key(
-                    "keywords") else "";
-                abstract = d["abstract"] if d.has_key(
-                    "abstract") else "";
-                source = d["source"] if d.has_key(
-                    "source") else "";
-                article_url = d["article_url"] if d.has_key(
-                    "article_url") else "";
-                display_url = d["display_url"] if d.has_key(
-                    "display_url") else "";
-                image_list = str(d["image_list"]) if d.has_key("image_list") else "";
-                result.append(d["title"])
-                list.append([title, keywords, abstract, content, source, article_url, display_url, image_list,contents])
-                i += 1
-                print "目前正在采集第" + str(i) + "条数据"
-                save.save_text(list, "toutiao_pc")
+    try:
+        data = get_pc_data(host)
+        if data <> "":
+            data1 = json.loads(data)
+            for d in data1["data"]:
+                if d["title"] not in result:
+                    list = [];
+                    if d.has_key("group_id"):
+                        itemUrl = "http://www.toutiao.com/a" + str(d["group_id"])
+                        try:
+                            r = requests.get(itemUrl)
+                            html = r.content
+                            soup = BeautifulSoup(html)
+                            pstr=""
+                            create_time = soup.find_all(class_="time")[0].text
+                            if len(soup.find_all(id="article-main"))>0:
+                                for pp in soup.find_all(id="article-main")[0].find_all("p"):
+                                     pstr+="\n"+str(pp)
+                                     if len(pp.find_all("img"))>0:
+                                         url=pp.find_all("img")[0]["src"]
+                                         r=requests.get(url)
+                                         img=[]
+                                         img.append([url,r.content])
+                                         save.save_img(img,"toutiao_pc_img")
+                                         # png[url]=r.content
+                                         # file="d://test//"+str(i+1)+".png"
+                                         # print file
+                                         # f = open(file, 'wb')
+                                         # f.write(r.content)
+                                         # f.close()
+                                title = soup.find_all(class_=re.compile("article-title"))[0].text
+                                content = soup.find_all(class_=re.compile("article-content"))[0].text
+                                # soup_1=soup.find_all(attrs={"class": "article-content"})[0]
+                                content = title + "\n" + content
+                                contents=pstr
+
+                                group_id = d["group_id"] if d.has_key(
+                                    "group_id") else "";
+                                item_id = d["item_id"] if d.has_key(
+                                    "item_id") else "";
+                                title = d["title"] if d.has_key(
+                                    "title") else "";
+                                keywords = d["keywords"] if d.has_key(
+                                    "keywords") else "";
+                                abstract = d["abstract"] if d.has_key(
+                                    "abstract") else "";
+                                source = d["source"] if d.has_key(
+                                    "source") else "";
+                                article_url = d["article_url"] if d.has_key(
+                                    "article_url") else "";
+                                display_url = d["display_url"] if d.has_key(
+                                    "display_url") else "";
+                                image_list = str(d["image_list"]) if d.has_key("image_list") else "";
+                                result.append(d["title"])
+                                list.append([title, keywords, abstract, content, source, article_url, display_url, image_list,contents,create_time])
+                                i += 1
+                                print "目前正在采集第" + str(i) + "条数据"
+                                save.save_text(list, "toutiao_pc")
+                        except:
+                            continue
+    except:
+        continue

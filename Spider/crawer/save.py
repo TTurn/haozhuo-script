@@ -13,7 +13,7 @@ def save_text(out, tablename):
         # cur.execute('create table leave_pred( time datetime,email varchar(20),prob float(4))')
 
         cur.executemany(
-            'insert into '+ tablename+'(title, keywords, abstract, content, source, article_url, display_url, image_list,htmls) values(%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+            'insert into '+ tablename+'(title, keywords, abstract, content, source, article_url, display_url, image_list,htmls,create_time) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
             out)
         conn.commit()
         cur.close()
