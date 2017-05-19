@@ -10,6 +10,8 @@ import json
 from bs4 import BeautifulSoup
 import save
 import re
+import time
+import random
 ''' 读Json数据 '''
 
 # def fetch_data(json_data):
@@ -146,6 +148,9 @@ while True:
                             i += 1
                             print "目前正在采集第" + str(i) + "条数据"
                             save.save_text(result_list, "toutiao_app")
+                            interval = random.randint(100, 150)
+                            if (i % interval == 0):
+                                time.sleep(random.random() * 1000)
                     except:
                         continue
     except:

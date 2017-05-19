@@ -5,7 +5,8 @@ import re
 from bs4 import BeautifulSoup
 import save
 import MySQLdb as mysql
-
+import time
+import random
 def get_pc_data(url):
     headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                'Accept-Encoding': 'gzip, deflate, sdch, br',
@@ -48,6 +49,7 @@ while True:
                                          r=requests.get(url)
                                          img=[]
                                          img.append([url,r.content])
+                                         # time.sleep(random.random() * 10)
                                          save.save_img(img,"toutiao_pc_img")
                                          # png[url]=r.content
                                          # file="d://test//"+str(i+1)+".png"
@@ -83,6 +85,9 @@ while True:
                                 i += 1
                                 print "目前正在采集第" + str(i) + "条数据"
                                 save.save_text(list, "toutiao_pc")
+                                interval = random.randint(100, 150)
+                                if (i % interval == 0):
+                                    time.sleep(random.random() * 1000)
                         except:
                             continue
     except:

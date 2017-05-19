@@ -3,9 +3,9 @@ import MySQLdb
 
 def save_text(out, tablename):
     try:
-        conn = MySQLdb.connect(host='192.168.1.201', user='haozhuo', passwd='haozhuo2015', port=3306, db="qwz")
+        conn = MySQLdb.connect(host='192.168.1.201', user='zixun', passwd='zixun', port=3306, db="zixun")
         cur = conn.cursor()
-        conn.select_db("qwz")
+        conn.select_db("zixun")
         conn.set_character_set('utf8')
         cur.execute('SET NAMES utf8;')
         cur.execute('SET CHARACTER SET utf8;')
@@ -23,9 +23,9 @@ def save_text(out, tablename):
         print "Mysql Error %d: %s" % (e.args[0], e.args[1])
 def save_img(out, tablename):
     try:
-        conn = MySQLdb.connect(host='192.168.1.201', user='haozhuo', passwd='haozhuo2015', port=3306, db='qwz')
+        conn = MySQLdb.connect(host='192.168.1.201', user='zixun', passwd='zixun', port=3306, db='zixun')
         cur = conn.cursor()
-        conn.select_db('qwz')
+        conn.select_db('zixun')
         conn.set_character_set('utf8')
         cur.execute('SET NAMES utf8;')
         cur.execute('SET CHARACTER SET utf8;')
