@@ -1,17 +1,24 @@
-#!/usr/local/bin/python2.7
-# -*- coding: utf8 -*-
-"""  
-  超级课程表话题抓取  
+# coding:utf-8
 """
-import urllib2
-import requests;
-from cookielib import CookieJar
+Crawl health news from Toutiao app
+
+Version: Python 2.7
+Author: Huang Jinbao, He Youqiang
+Date: 20170520
+"""
+
 import json
-from bs4 import BeautifulSoup
-import save
+import random
 import re
 import time
-import random
+import urllib2
+from cookielib import CookieJar
+
+import requests
+from bs4 import BeautifulSoup
+
+import save
+
 ''' 读Json数据 '''
 
 # def fetch_data(json_data):
