@@ -13,6 +13,7 @@ from collections import defaultdict
 from features import FeatureBuilder, feature_single
 from simhash_imp import SimhashBuilder
 from is_similar import DocFeatLoader
+import multiprocessing
 
 
 def build_dict():
@@ -23,13 +24,13 @@ def build_dict():
 
 	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler', charset='utf8')
 	cursor = conn.cursor()
-	sql = "select count(id) from toutiao_app_unique"
+	sql = "select count(id) from toutiao_app_combine_20170608"
 	cursor.execute(sql)
 	conn.commit()
 	length = cursor.fetchall()[0][0]
 
 	# get content
-	sql = "select content from toutiao_app_unique"
+	sql = "select content from toutiao_app_combine_20170608"
 	cursor.execute(sql)
 	conn.commit()
 
@@ -77,41 +78,54 @@ def gen_fp_single(word_seg):
 
 	return doc_fp
 
+def save_fp_single(i, result, cursor, conn):
+	if result:
+		id = result[0] if result[0] else ""
+		content = result[1] if result[1] else ""
+	else:
+		id = ""
+		content = ""
+	print("正在转换第{0}篇的指纹 id:{1}".format(i + 1, id))
+	# print(result)
+	content_clean = clean(content)
+	content_seg = engine(content_clean)
+	try:
+		content_fp = gen_fp_single(content_seg).fingerprint
+	except:
+		print("-------指纹获取失败error-------{0}".format(id))
+	try:
+		sql = "UPDATE toutiao_app_combine_20170608 SET fingerprint = %s WHERE id = %s"
+		values = (content_fp, id)
+		cursor.execute(sql, values)
+		conn.commit()
+	except:
+		print("-------------out of range error------------{0}".format(id))
+
+
 def save_fp_all():
 	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler',
 						   charset='utf8')
 	cursor = conn.cursor()
-	sql = "select count(id) from toutiao_app_unique"
+	sql = "select count(id) from toutiao_app_combine_20170608"
 	cursor.execute(sql)
 	conn.commit()
 	length = cursor.fetchall()[0][0]
 
 	# get content
-	sql = "select id, content from toutiao_app_unique"
+	sql = "select id, content from toutiao_app_combine_20170608"
 	cursor.execute(sql)
 	conn.commit()
 	results = cursor.fetchall()
 
-	for i in range(7925, length):
+	pool = multiprocessing.Pool(multiprocessing.cpu_count())
+
+	for i in range(length):
 		result = results[i]
-		if result:
-			id = result[0] if result[0] else ""
-			content = result[1] if result[1] else ""
-		else:
-			id = ""
-			content = ""
-		print("正在转换第{0}篇的指纹".format(i + 1))
-		# print(result)
-		content_clean = clean(content)
-		content_seg = engine(content_clean)
-		content_fp = gen_fp_single(content_seg).fingerprint
-		try:
-			sql = "UPDATE toutiao_app_unique SET fingerprint = %s WHERE id = %s"
-			values = (content_fp, id)
-			cursor.execute(sql, values)
-			conn.commit()
-		except:
-			print("-------------out of range error------------")
+		save_fp_single(i, result, cursor, conn)
+		# pool.apply_async(save_fp_single, (i, results, cursor, conn))
+
+	pool.close()
+	pool.join()
 
 	cursor.close()
 	conn.close()

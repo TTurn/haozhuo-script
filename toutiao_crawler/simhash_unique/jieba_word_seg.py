@@ -24,7 +24,7 @@ def engine(content):
 
 	word_nature = pseg.cut(content)
 	for word, nature in word_nature:
-		if word not in stopwords and nature not in stopwords_nature:
+		if (word not in stopwords) and (nature not in stopwords_nature) and not word.isdigit():
 			word_seg = word_seg + word + " "
 
 	return word_seg
