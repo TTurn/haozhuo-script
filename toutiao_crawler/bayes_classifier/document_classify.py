@@ -19,6 +19,12 @@ class Classifier():
 	def __init__(self):
 		self.get_features = jieba_word_seg.engine
 
+	def get_tf_idf_features(self):
+		with open("../data/tf_idf_feat", 'r') as f:
+			tf_idf_features = [line.strip() for line in f.readlines()]
+
+		return tf_idf_features
+
 	def cat_count(self):
 		cat_num = defaultdict(int)
 
@@ -33,7 +39,8 @@ class Classifier():
 
 		length = len(labels)
 
-		labels = labels[:length-12]
+		# labels = labels[:length-int(length/20)]
+		labels = labels[:length-50]
 
 		for i in labels:
 			label_list = i[0].split(",")
@@ -52,7 +59,7 @@ class Classifier():
 
 		return cat_prob_dict
 
-	def feat_cat_count(self):
+	def feat_cat_count(self, tf_idf_features):
 		# 格式{C1:{F1:num,}, C2:{F1:num}}
 		feat_cat_num = dict()
 
@@ -70,13 +77,17 @@ class Classifier():
 		conn.commit()
 
 
-		for i in range(length-12):
+		# for i in range(length-int(length/20)):
+		for i in range(length-50):
 			content_label = cursor.fetchone()
 			content = BeautifulSoup(content_label[0], 'lxml').get_text()
 			labels = content_label[1].split(",")
 			# 关键点，features要set掉！
 			features = set(self.get_features(content).split())
+
 			for feature in features:
+				if feature not in tf_idf_features:
+					continue
 				print("---正在计算特征/类别数目---")
 				for label in labels:
 					if label not in feat_cat_num:
@@ -104,12 +115,13 @@ class Classifier():
 				# 关键点：除以类别中文章的个数！
 				basic = features[feature]/cat_num[cat]
 				total = self.get_feat_total(feat_cat_num, feature)
+				# 关键点：修正概率，加权平均
 				weigthed_prob = (weight*assumed_prob+basic*total)/(weight+total)
 				feat_in_cat_prob[cat+" "+feature] = weigthed_prob
 
 		return feat_in_cat_prob
 
-	def doc_prob(self, content, cat_prob, feat_in_cat_prob, feat_cat_num, weight=1.0):
+	def doc_prob(self, content, cat_prob, feat_in_cat_prob, feat_cat_num, tf_idf_features, weight=1.0):
 		doc_cat = {}
 		features = set(self.get_features(content).split())
 
@@ -118,8 +130,12 @@ class Classifier():
 			assumed_prob = cat_prob_dict[cat]
 			for feature in features:
 				# 关键点：如果类别里没有这个特征的话，也要加个先验概率，直接continue相当于乘以1
+				if feature not in tf_idf_features:
+					continue
+
 				if (cat+" "+feature) not in feat_in_cat_prob:
 					total = self.get_feat_total(feat_cat_num, feature)
+					# 避免0的出现，平滑
 					weighted_prob = (weight*assumed_prob+0*total)/(weight+total)
 					feat_in_cat_prob[cat+" "+feature] = weighted_prob
 
@@ -130,7 +146,7 @@ class Classifier():
 
 		return sorted_doc_cat
 
-	def predict(self, cat_prob, feat_in_cat_prob, feat_cat_num):
+	def predict(self, cat_prob, feat_in_cat_prob, feat_cat_num, tf_idf_features):
 		conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler',
 							   charset='utf8')
 		cursor = conn.cursor()
@@ -142,20 +158,23 @@ class Classifier():
 
 		length = len(id_contents)
 
-		id_contents = id_contents[length-12:]
+		# id_contents = id_contents[length-int(length/20)-1:]
+		id_contents = id_contents[length-50:]
+
 
 		for id_content in id_contents:
 			id = id_content[0]
 			content = BeautifulSoup(id_content[1],'lxml').get_text()
 			print("---正在计算类别/文档概率")
 			print("------"+str(id)+"--------")
-			print(self.doc_prob(content, cat_prob, feat_in_cat_prob, feat_cat_num))
+			print(self.doc_prob(content, cat_prob, feat_in_cat_prob, feat_cat_num, tf_idf_features))
 
 
 if __name__ == "__main__":
 	docclassify = Classifier()
 	cat_num = docclassify.cat_count()
+	tf_idf_features = docclassify.get_tf_idf_features()
 	cat_prob_dict = docclassify.cat_prob(cat_num)
-	feat_cat_num = docclassify.feat_cat_count()
+	feat_cat_num = docclassify.feat_cat_count(tf_idf_features)
 	feat_cat_prob = docclassify.weighted_feat_cat_prob(feat_cat_num, cat_num, cat_prob_dict)
-	docclassify.predict(cat_prob_dict, feat_cat_prob, feat_cat_num)
+	docclassify.predict(cat_prob_dict, feat_cat_prob, feat_cat_num, tf_idf_features)

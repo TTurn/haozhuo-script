@@ -56,6 +56,7 @@ def save_word_dict(word_dict):
 	f.close()
 	g.close()
 
+
 if __name__ == "__main__":
 	results = get_samples()
 	sorted_word_dict = get_word_dict(results)

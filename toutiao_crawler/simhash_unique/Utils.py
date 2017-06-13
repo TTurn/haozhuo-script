@@ -1,11 +1,4 @@
-#!/usr/bin/env python
-#-*-coding:utf8-*-
-'''
-@Created on 2013-10-21
-@author zyy_max
-@brief utils of common methods
-@modified on 2013-10-23 ==> change break condition of cosine(euclidean)_distance_nonzero
-'''
+# coding:utf-8
 
 import math
 
