@@ -127,7 +127,7 @@ class Classifier():
 
 		for cat in cat_prob:
 			doc_prob_single = cat_prob[cat]
-			assumed_prob = cat_prob_dict[cat]
+			assumed_prob = cat_prob[cat]
 			for feature in features:
 				# 关键点：如果类别里没有这个特征的话，也要加个先验概率，直接continue相当于乘以1
 				if feature not in tf_idf_features:

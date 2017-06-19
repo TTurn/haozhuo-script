@@ -95,7 +95,7 @@ def unique_save_feat():
 
 
 def engine(contents, feat_in_doc_list):
-	for content in contents:
+	for content in contents[:len(contents)-50]:
 		sorted_feature_tf_idf = tf_idf_sort(content, feat_in_doc_list)
 		tf_idf_sort_save(sorted_feature_tf_idf)
 
@@ -105,4 +105,4 @@ if __name__ == "__main__":
 	contents = get_samples()
 	feat_in_doc_list = feat_doc_count_list(contents)
 	engine(contents, feat_in_doc_list)
-	# unique_save_feat()
+	unique_save_feat()

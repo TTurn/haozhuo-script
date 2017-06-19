@@ -51,14 +51,15 @@ def download_article(url, proxy):
 				"Accept-Language":"zh-CN,zh;q=0.8,en;q=0.6",
 				"Cache-Control":"max-age=0",
 				"Connection":"keep-alive",
-				# "Cookie":'uuid="w:0679fa3956ec4a25b1df0c6f1414f644"; UM_distinctid=15c0f85c307917-0393925375c7e1-396a7807-13c680-15c0f85c3083c6; utm_campaign=client_share; utm_medium=toutiao_ios; tt_webid=58898935764; csrftoken=4e4b8c67d5c0d158fb6e187d70eee007; utm_source=toutiao; __tasessionId=4c9bhk63n1496318497849; _ba=BA0.2-20170601-51d9e-JYRWTIu0eUXHHeFyq7nD; CNZZDATA1259612802=1234287108-1494904209-https%253A%252F%252Fwww.google.com%252F%7C1496314101; _ga=GA1.2.357536120.1494909044; _gid=GA1.2.1507970231.1496318870',
+			   # "Cookie":'uuid="w:0679fa3956ec4a25b1df0c6f1414f644"; UM_distinctid=15c0f85c307917-0393925375c7e1-396a7807-13c680-15c0f85c3083c6; utm_campaign=client_share; utm_medium=toutiao_ios; tt_webid=58898935764; csrftoken=4e4b8c67d5c0d158fb6e187d70eee007; utm_source=toutiao; __tasessionId=4c9bhk63n1496318497849; _ba=BA0.2-20170601-51d9e-JYRWTIu0eUXHHeFyq7nD; CNZZDATA1259612802=1234287108-1494904209-https%253A%252F%252Fwww.google.com%252F%7C1496314101; _ga=GA1.2.357536120.1494909044; _gid=GA1.2.1507970231.1496318870',
+			   # "Cookie":'uuid="w:0679fa3956ec4a25b1df0c6f1414f644"; UM_distinctid=15c0f85c307917-0393925375c7e1-396a7807-13c680-15c0f85c3083c6; tt_webid=58898935764; __utma=24953151.357536120.1494909044.1497862244.1497870184.7; __utmc=24953151; __utmz=24953151.1497525300.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); csrftoken=4e4b8c67d5c0d158fb6e187d70eee007; _ba=BA0.2-20170601-51d9e-JYRWTIu0eUXHHeFyq7nD; __tasessionId=318opm6uk1497875205076; _ga=GA1.2.357536120.1494909044; _gid=GA1.2.189065431.1497843875; CNZZDATA1259612802=1234287108-1494904209-https%253A%252F%252Fwww.google.com%252F%7C1497873569',
 				"Host":"www.toutiao.com",
 				"Upgrade-Insecure-Requests":"1",
 				"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
 				}
 	try:
 		# time.sleep(3)
-		# r = requests.get(url, headers=headers, proxies=proxy, timeout=10)
+		# r = requests.get(url, headers=headers, proxies=proxy, timeout=20)
 		r = requests.get(url, headers=headers, timeout=10)
 		return r.content.decode('utf-8')
 	except:
@@ -108,6 +109,7 @@ def parse_article(results, proxy):
 			results[i]['create_time'] = soup.find_all(class_='time')[0].get_text()
 			results[i]['content'] = soup.find_all(class_='article-content')[0].get_text()
 			results[i]['htmls'] = str(soup.find_all(class_='article-content')[0])
+			results[i]
 		except:
 			print(results[i]['display_url'] + "  为问答或广告")
 			wrong_results.append(results[i])
@@ -125,7 +127,7 @@ def save(results):
 	"""
 	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler', charset='utf8')
 	cursor = conn.cursor()
-	sql = "INSERT INTO toutiao_app_hyq (title, keywords, abstract, content, source," \
+	sql = "INSERT IGNORE INTO toutiao_app_combine_unique_20170608 (title, keywords, abstract, content, source," \
 		  "display_url, htmls, create_time) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
 	result_num = 1
 	for result in results:
@@ -168,6 +170,8 @@ if __name__ == "__main__":
 		# engine(page)
 		if page % 25 == 0:
 			proxy = get_proxy.get_proxy()
-		pool.apply_async(engine, (page, proxy))
+		print(proxy)
+		# engine(page, proxy)
+		# pool.apply_async(engine, (page, proxy))
 	pool.close()
 	pool.join()

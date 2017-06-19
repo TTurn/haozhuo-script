@@ -1,0 +1,453 @@
+点击右上角，关注本头条号，关注养生，健康你我！每隔一个月左右，子宫内膜发生一自主增厚,血管增生、腺体生长分泌以及子宫内膜崩溃脱落并伴随出血的周期性变化.这种周期性阴道排血或子宫出血现象——月经。女性在月经期间合理饮食会大有收获哦。月经期间吃什么排污血？1、红豆有一个伟大的使命，那就是呵护我们女性，在我们需要它的时候，无私奉献出它的全部。我们月经来潮的时候因为失血而损失了血液中的血浆蛋白、铁、钾、钙、镁等(尤其是月经量多者)，正在这个时候，如果可以喝上一碗红豆沙、红豆汤或者红豆粥，既美容又补血，的确是女性经期补血的必备食物。
+
+        #pgc-card .pgc-card-href {
+            text-decoration: none;
+            outline: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        #pgc-card .pgc-card-href:hover {
+            text-decoration: none;
+        }
+        /*pc 样式*/
+        .pgc-card {
+            height: 130px;
+            border: 1px solid #e8e8e8;
+            position: relative;
+            padding: 20px 94px 12px 180px;
+            overflow: hidden;
+        }
+
+        .pgc-card::after {
+            content: " ";
+            display: block;
+            border-left: 1px solid #e8e8e8;
+            height: 120px;
+            position: absolute;
+            right: 76px;
+            top: 20px;
+        }
+
+        .pgc-cover {
+            position: absolute;
+            width: 162px;
+            height: 162px;
+            top: 0;
+            left: 0;
+            background-size: cover;
+        }
+
+        .pgc-content {
+            overflow: hidden;
+            position: relative;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .pgc-content-title {
+            font-size: 18px;
+            color: #222;
+            line-height: 1;
+	        font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .pgc-content-desc {
+            font-size: 14px;
+            color: #444;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-top: 9px;
+            overflow: hidden;
+            line-height: 1.2em;
+            display: -webkit-inline-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .pgc-content-price {
+            font-size: 22px;
+            color: #f85959;
+            padding-top: 18px;
+            line-height: 1em;
+        }
+
+        .pgc-card-buy {
+            width: 75px;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            color: #406599;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .pgc-buy-text {
+            padding-top: 10px;
+        }
+
+        .pgc-icon-buy {
+            height: 23px;
+            width: 20px;
+            display: inline-block;
+            background: url('https://s0.pstatp.com/pgc/v2/pgc_tpl/static/image/commodity_buy_f2b4d1a.png');
+        }
+
+
+
+
+
+赤小豆 农家自产新货 500g
+
+￥9.8
+
+
+
+购买
+
+
+
+2、可以适当的吃点甜食，可以帮助排毒和排污血。
+
+        #pgc-card .pgc-card-href {
+            text-decoration: none;
+            outline: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        #pgc-card .pgc-card-href:hover {
+            text-decoration: none;
+        }
+        /*pc 样式*/
+        .pgc-card {
+            height: 130px;
+            border: 1px solid #e8e8e8;
+            position: relative;
+            padding: 20px 94px 12px 180px;
+            overflow: hidden;
+        }
+
+        .pgc-card::after {
+            content: " ";
+            display: block;
+            border-left: 1px solid #e8e8e8;
+            height: 120px;
+            position: absolute;
+            right: 76px;
+            top: 20px;
+        }
+
+        .pgc-cover {
+            position: absolute;
+            width: 162px;
+            height: 162px;
+            top: 0;
+            left: 0;
+            background-size: cover;
+        }
+
+        .pgc-content {
+            overflow: hidden;
+            position: relative;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .pgc-content-title {
+            font-size: 18px;
+            color: #222;
+            line-height: 1;
+	        font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .pgc-content-desc {
+            font-size: 14px;
+            color: #444;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-top: 9px;
+            overflow: hidden;
+            line-height: 1.2em;
+            display: -webkit-inline-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .pgc-content-price {
+            font-size: 22px;
+            color: #f85959;
+            padding-top: 18px;
+            line-height: 1em;
+        }
+
+        .pgc-card-buy {
+            width: 75px;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            color: #406599;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .pgc-buy-text {
+            padding-top: 10px;
+        }
+
+        .pgc-icon-buy {
+            height: 23px;
+            width: 20px;
+            display: inline-block;
+            background: url('https://s0.pstatp.com/pgc/v2/pgc_tpl/static/image/commodity_buy_f2b4d1a.png');
+        }
+
+
+
+
+
+1000g 正宗云南黑糖 黑红糖纯老红糖
+
+￥24.9
+
+
+
+购买
+
+
+
+中医认为，红糖性温、味甘，入脾经。砂糖具有和脾缓肝、补血、活血、通淤以及排泄恶露的作用。经期喝红糖水，有助于排除毒素、排除淤血，可让身体温暖，增加能量，活络气血，加快血液循环，月经也会排得较为顺畅。适当吃猪血能起到助排污血的作用。1、月经期容易腰痛、食欲不好，这时要多吃一些开胃、易消化的食物，如枣、山楂片、面条、薏米粥等。
+
+        #pgc-card .pgc-card-href {
+            text-decoration: none;
+            outline: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        #pgc-card .pgc-card-href:hover {
+            text-decoration: none;
+        }
+        /*pc 样式*/
+        .pgc-card {
+            height: 130px;
+            border: 1px solid #e8e8e8;
+            position: relative;
+            padding: 20px 94px 12px 180px;
+            overflow: hidden;
+        }
+
+        .pgc-card::after {
+            content: " ";
+            display: block;
+            border-left: 1px solid #e8e8e8;
+            height: 120px;
+            position: absolute;
+            right: 76px;
+            top: 20px;
+        }
+
+        .pgc-cover {
+            position: absolute;
+            width: 162px;
+            height: 162px;
+            top: 0;
+            left: 0;
+            background-size: cover;
+        }
+
+        .pgc-content {
+            overflow: hidden;
+            position: relative;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .pgc-content-title {
+            font-size: 18px;
+            color: #222;
+            line-height: 1;
+	        font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .pgc-content-desc {
+            font-size: 14px;
+            color: #444;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-top: 9px;
+            overflow: hidden;
+            line-height: 1.2em;
+            display: -webkit-inline-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .pgc-content-price {
+            font-size: 22px;
+            color: #f85959;
+            padding-top: 18px;
+            line-height: 1em;
+        }
+
+        .pgc-card-buy {
+            width: 75px;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            color: #406599;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .pgc-buy-text {
+            padding-top: 10px;
+        }
+
+        .pgc-icon-buy {
+            height: 23px;
+            width: 20px;
+            display: inline-block;
+            background: url('https://s0.pstatp.com/pgc/v2/pgc_tpl/static/image/commodity_buy_f2b4d1a.png');
+        }
+
+
+
+
+
+250g*2袋 新疆灰枣 阿克苏红枣
+
+￥20.99
+
+
+
+购买
+
+
+
+2、月经期间多喝温水、多上厕所，更利于排除体内多余的垃圾。3、月经时多吃黑色的东西，比如说黑木耳，海带也是是非常好的。
+
+        #pgc-card .pgc-card-href {
+            text-decoration: none;
+            outline: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        #pgc-card .pgc-card-href:hover {
+            text-decoration: none;
+        }
+        /*pc 样式*/
+        .pgc-card {
+            height: 130px;
+            border: 1px solid #e8e8e8;
+            position: relative;
+            padding: 20px 94px 12px 180px;
+            overflow: hidden;
+        }
+
+        .pgc-card::after {
+            content: " ";
+            display: block;
+            border-left: 1px solid #e8e8e8;
+            height: 120px;
+            position: absolute;
+            right: 76px;
+            top: 20px;
+        }
+
+        .pgc-cover {
+            position: absolute;
+            width: 162px;
+            height: 162px;
+            top: 0;
+            left: 0;
+            background-size: cover;
+        }
+
+        .pgc-content {
+            overflow: hidden;
+            position: relative;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .pgc-content-title {
+            font-size: 18px;
+            color: #222;
+            line-height: 1;
+	        font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .pgc-content-desc {
+            font-size: 14px;
+            color: #444;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-top: 9px;
+            overflow: hidden;
+            line-height: 1.2em;
+            display: -webkit-inline-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .pgc-content-price {
+            font-size: 22px;
+            color: #f85959;
+            padding-top: 18px;
+            line-height: 1em;
+        }
+
+        .pgc-card-buy {
+            width: 75px;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            color: #406599;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .pgc-buy-text {
+            padding-top: 10px;
+        }
+
+        .pgc-icon-buy {
+            height: 23px;
+            width: 20px;
+            display: inline-block;
+            background: url('https://s0.pstatp.com/pgc/v2/pgc_tpl/static/image/commodity_buy_f2b4d1a.png');
+        }
+
+
+
+
+
+九胶堂正宗黑蒜 出口级 独头黑大蒜
+
+￥36.9
+
+
+
+购买
+
+
+
+月经期排污血不能吃什么？1、辛辣的食物容易造成月经不调或者月经过量。严重的话还会影响生理期的代谢，甚至让身体囤积着大量的脂肪。2、茶叶含有咖啡碱，咖啡碱会让身体产生兴奋的情绪，还会加快身体的代谢功能。如果在经期喝浓茶会严重月经期，并且会增加月经量，影响身体健康。3、苦瓜性寒凉，在月经期间会让经血快速缩减，导致经血不能顺利排出。4、在经期食用螃蟹，会造成月经失调或者让经血停止，消化功能降低。身体内的多余废物就会囤积在身体内，形成脂肪。小仙女们，经期是女人最脆弱的时候，一定要好好保养自己哦~

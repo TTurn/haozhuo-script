@@ -13,7 +13,7 @@ def get_samples():
 	"""
 	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler', charset='utf8')
 	cursor = conn.cursor()
-	sql = "select title, abstract, htmls, display_url, id from toutiao_app_combine_20170608"
+	sql = "select title, abstract, htmls, display_url, id from toutiao_app_combine_unique_20170608"
 	cursor.execute(sql)
 	conn.commit()
 
