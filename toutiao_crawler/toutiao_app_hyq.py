@@ -14,6 +14,9 @@ from select_proxy import SelectProxy
 from get_proxy import GetProxy
 import time
 import multiprocessing
+import re
+from datetime import datetime
+from datetime import timedelta
 
 def download_page(proxy):
 	"""
@@ -87,12 +90,91 @@ def parse_page(content):
 
 	return results
 
+def get_image_list(soup):
+	image_list = []
+
+	for _ in soup.find_all('img'):
+		image_list.append(_['src'])
+
+	return image_list
+
+def get_comment_count(soup):
+	for tag in soup.find_all("script"):
+		pattern = re.compile("\d+")
+		if "utils.numCutByComma" in tag.get_text():
+			line = tag.get_text().split("\n")[4]
+			comment_count = re.search(pattern, line).group()
+			return comment_count
+
+	return False
+
+def judge_by_title(title):
+	pattern = re.compile("执业|执医|执照|狗|猪|通知")
+
+	return re.search(pattern, title)
+
+def judge_by_content(content):
+	pattern = re.compile("兽医|taobao|jd")
+
+	return re.search(pattern, content)
+
+def judge_by_source(source):
+	pattern = re.compile("养殖|猪")
+
+	return re.search(pattern, source)
+
+def judge_conference(content, create_time, init=0.15):
+	"""
+	基于时间和发布时间比较及特殊字段来判断是否是通讯
+	"""
+
+	pattern1 = re.compile('([0-9]{4}年)\d{1,2}月\d{1,2}日')  # 年 月 日
+	pattern3 = re.compile('会议|论坛|通知|通讯|记者')
+
+	timedelta1 = timedelta(days=-3)
+	timedelta2 = timedelta(days=3)
+
+	length = len(content)
+
+	# 根据字段判断
+	match3 = pattern3.search(content[:int(init * length)])
+	if match3:
+		return True
+
+	match1 = pattern1.search(content[:int(init * length)])
+	if match1:
+		date_raw = match1.group()
+		date_std = date_raw.replace(r'年', '-').replace(r'月', '-').replace(r'日', '')
+		try:
+			date_std = datetime.strptime(date_std, "%Y-%m-%d")
+		except:
+			date_spec = date_std.split('-')
+			year = int(date_spec[0])
+			month = int(date_spec[1])
+			day = int(date_spec[2])
+			date = str(year) + '-' + str(month) + '-' + str(day)
+			date_std = datetime.strptime(date, "%Y-%m-%d")
+
+		if timedelta1 < date_std - create_time < timedelta2:
+			return True
+
+	return False
+
+def judge_short(content):
+
+	length = len(content)
+	if length < 300:
+		return True
+
+	return False
+
+
 def parse_article(results, proxy):
 	"""
 	根据display_url，得到html，抽取content, htmls,
 	create_time等字段
 	"""
-	# 把错误的文章index记下来，最后删除
+	# 把错误的文章内容记下来，最后删除
 	wrong_results = []
 
 	for i in range(len(results)):
@@ -106,10 +188,75 @@ def parse_article(results, proxy):
 			continue
 		soup = BeautifulSoup(article_html, 'lxml')
 		try:
+
+			# 常规字段添加
 			results[i]['create_time'] = soup.find_all(class_='time')[0].get_text()
 			results[i]['content'] = soup.find_all(class_='article-content')[0].get_text()
 			results[i]['htmls'] = str(soup.find_all(class_='article-content')[0])
-			results[i]
+			news_class = soup.find_all(ga_event="click_channel")[0].get_text()
+
+			# 添加image_thumbnail和image_list
+			image_list = get_image_list(soup)
+			image_thumbnail = image_list[0] if image_list else ""
+			image_list = ",".join(image_list) if image_list else ""
+			results[i]["image_thumbnail"] = image_thumbnail
+			results[i]["image_list"] = image_list
+
+			# 主题不是健康的去除！！不能放前面，不然等会remove去除不好去除。保险起见。可优化
+			if news_class == "健康":
+				news_label_list = ",".join(soup.find_all(class_="label-list")[0].get_text().split())
+				# 添加原生资讯的主题，标签
+				results[i]['raw_class'] = news_class
+				results[i]['raw_label'] = news_label_list
+			else:
+				wrong_results.append(results[i])
+				continue  # continue直接跳出这一次循环，然后通过wrong_results在后面把这个残缺的result去除
+
+			# 界面没有评论字段的去除！！
+			comment_count = get_comment_count(soup)
+			if comment_count:
+				results[i]['commment_count'] = comment_count
+			else:
+				wrong_results.append(results[i])
+				continue
+
+			# 去除文本内容很少的
+			if not judge_short(results[i]['content']):
+				pass
+			else:
+				wrong_results.append(results[i])
+
+			# 去除会议新闻，基于时间判断
+			if not judge_conference(results[i]['content'], results[i]['conference']):
+				pass
+			else:
+				wrong_results.append(results[i])
+				continue
+
+			# 根据标题清除
+			if not judge_by_title(results[i]['title']):
+				pass
+			else:
+				wrong_results.append(results[i])
+				continue
+
+			# 根据内容清除
+			if not judge_by_content(results[i]['content']):
+				pass
+			else:
+				wrong_results.append(results[i])
+				continue
+
+			# 根据来源清除
+			if not judge_by_source(results[i]['source']):
+				pass
+			else:
+				wrong_results.append(results[i])
+				continue
+
+
+
+
 		except:
 			print(results[i]['display_url'] + "  为问答或广告")
 			wrong_results.append(results[i])
@@ -128,13 +275,14 @@ def save(results):
 	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler', charset='utf8')
 	cursor = conn.cursor()
 	sql = "INSERT IGNORE INTO toutiao_app_combine_unique_20170608 (title, keywords, abstract, content, source," \
-		  "display_url, htmls, create_time) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+		  "display_url, htmls, create_time, raw_class, raw_label, image_thumbnail, image_list, comment_count) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 	result_num = 1
 	for result in results:
 		print("正在存储第{0}篇文章".format(result_num))
 		result_num += 1
 		values = (result['title'], result['keywords'], result['abstract'], result['content'], result['source'],
-				  result['display_url'], result['htmls'], result['create_time'])
+				  result['display_url'], result['htmls'], result['create_time'], result['raw_class'], result['raw_label'],
+				  result['image_thumbnail'], result['image_list'], result['comment_count'])
 		try:
 			cursor.execute(sql, values)
 		except:

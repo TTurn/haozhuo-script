@@ -1,4 +1,7 @@
 # coding: utf-8
+"""
+抽取样本写入excel给运营同学审核
+"""
 
 import pymysql
 from random import sample
@@ -8,7 +11,7 @@ def get_random_urls():
 	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler',
 							   charset='utf8')
 	cursor = conn.cursor()
-	sql = "select display_url from toutiao_app_combine_unique_20170608"
+	sql = "select display_url from toutiao_app_combine_unique_20170620"
 	cursor.execute(sql)
 	conn.commit()
 
@@ -20,7 +23,7 @@ def get_random_urls():
 
 def save_url(urls):
 	data=xlwt.Workbook()
-	table = data.add_sheet('0616')
+	table = data.add_sheet('0621')
 
 	table.write(0, 0, "资讯原生链接")
 	for i in range(len(urls)):
@@ -28,7 +31,7 @@ def save_url(urls):
 		url = urls[i]
 		table.write(i+1, 0, url)
 
-	data.save("资讯问题详细记录_运营_0616.xls")
+	data.save("资讯问题详细记录_运营_0621.xls")
 
 if __name__ == "__main__":
 	urls = get_random_urls()
