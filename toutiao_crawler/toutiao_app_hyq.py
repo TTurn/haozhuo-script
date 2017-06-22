@@ -17,6 +17,7 @@ import multiprocessing
 import re
 from datetime import datetime
 from datetime import timedelta
+from image_save.download_save_image import DownloadSaveImage
 
 def download_page(proxy):
 	"""
@@ -168,8 +169,61 @@ def judge_short(content):
 
 	return False
 
+def judge_image_interlink(content):
+	"""
+	检查图片中是否包含内链
+	"""
+	pattern = re.compile("pgc-card .pgc-card-href")
 
-def parse_article(results, proxy):
+	return re.search(pattern, content)
+
+def sub_image_interlink_content(content):
+	content_clean = re.sub("#pgc(.*?)购买", "", content, flags=re.S)
+
+	return content_clean
+
+def sub_image_interlink_html(html):
+	soup = BeautifulSoup(html, 'lxml')
+	for _ in soup.find_all("style"):
+		_.decompose()
+	for _ in soup.find_all(class_=re.compile("pgc.*")):
+		_.decompose()
+
+	return soup
+
+def judge_content_promotion(content):
+	"""
+	检查图片中是否包含推广内容
+	"""
+	pattern = re.compile("热线|微信|公众号|头条号")
+
+	return re.search(pattern, content)
+
+def get_promotion_part():
+	with open("data/news_promotion_part.txt") as f:
+		lines = f.readlines()
+		promotion_list = [line.strip() for line in lines]
+
+	return promotion_list
+
+def get_delete_promotion(promotion_list, content):
+	delete_promotion = []
+	for promotion in promotion_list:
+		if promotion in content:
+			delete_promotion.append(promotion)
+
+	return delete_promotion
+
+def sub_delete_promotion_html(html, promotion):
+	soup = BeautifulSoup(html, 'lxml')
+	for _ in soup.find_all("p"):
+		if promotion in _.get_text():
+			_.decompose()
+
+	return str(soup)
+
+
+def parse_article(results, proxy, dsi):
 	"""
 	根据display_url，得到html，抽取content, htmls,
 	create_time等字段
@@ -188,19 +242,11 @@ def parse_article(results, proxy):
 			continue
 		soup = BeautifulSoup(article_html, 'lxml')
 		try:
-
 			# 常规字段添加
 			results[i]['create_time'] = soup.find_all(class_='time')[0].get_text()
 			results[i]['content'] = soup.find_all(class_='article-content')[0].get_text()
 			results[i]['htmls'] = str(soup.find_all(class_='article-content')[0])
 			news_class = soup.find_all(ga_event="click_channel")[0].get_text()
-
-			# 添加image_thumbnail和image_list
-			image_list = get_image_list(soup)
-			image_thumbnail = image_list[0] if image_list else ""
-			image_list = ",".join(image_list) if image_list else ""
-			results[i]["image_thumbnail"] = image_thumbnail
-			results[i]["image_list"] = image_list
 
 			# 主题不是健康的去除！！不能放前面，不然等会remove去除不好去除。保险起见。可优化
 			if news_class == "健康":
@@ -212,10 +258,25 @@ def parse_article(results, proxy):
 				wrong_results.append(results[i])
 				continue  # continue直接跳出这一次循环，然后通过wrong_results在后面把这个残缺的result去除
 
+			# 过滤文字中包含推广的，如果可以修正，则修正保存，不能修正，则清除
+			if judge_content_promotion(results[i]['content']):
+				promotion_list = get_promotion_part()
+				# 查看是否有可替换的字段
+				delete_promotion = get_delete_promotion(promotion_list, results[i]['content'])
+				if not delete_promotion:
+					# 如果我们总结的特殊字段在内容中没有，那么这个资讯直接删掉
+					wrong_results.append(results[i])
+					continue
+				else:
+					# 如果我们总结的特殊字段在内容中有，那么这个资讯要修正
+					for promotion in delete_promotion:
+						results[i]['content'] = results[i]['content'].replace(promotion, "")
+						results[i]['htmls'] = sub_delete_promotion_html(results[i]['htmls'], promotion)
+
 			# 界面没有评论字段的去除！！
 			comment_count = get_comment_count(soup)
 			if comment_count:
-				results[i]['commment_count'] = comment_count
+				results[i]['comment_count'] = comment_count
 			else:
 				wrong_results.append(results[i])
 				continue
@@ -227,7 +288,7 @@ def parse_article(results, proxy):
 				wrong_results.append(results[i])
 
 			# 去除会议新闻，基于时间判断
-			if not judge_conference(results[i]['content'], results[i]['conference']):
+			if not judge_conference(results[i]['content'], results[i]['create_time']):
 				pass
 			else:
 				wrong_results.append(results[i])
@@ -254,8 +315,36 @@ def parse_article(results, proxy):
 				wrong_results.append(results[i])
 				continue
 
+			# 修正图片里面包含内链的
+			if judge_image_interlink(results[i]['content']):
+				results[i]['content'] = sub_image_interlink_content(results[i]['content'])
+				results[i]['htmls'] = sub_image_interlink_html(results[i]['htmls'])
 
+			# 替换图片链接
+			img_src_list = dsi.get_image_src(results[i]['htmls'])
+			for url in img_src_list:
+				try:
+					img_content = dsi.download(url)
+				except:
+					# print("------图片不能下载------url:{0}".format(url))
+					continue
+				path_url = dsi.get_file_path()
+				save_path = path_url[0]
+				save_url = path_url[1]
+				try:
+					dsi.upyun_save(img_content, save_path)
+				except:
+					# print("------图片不能存储------url:{0}".format(url))
+					continue
+				results[i]['htmls'] = results[i]['htmls'].replace(url, save_url)
 
+			# 添加image_thumbnail和image_list
+			soup = BeautifulSoup(results[i]['htmls'])
+			image_list = get_image_list(soup)
+			image_thumbnail = image_list[0] if image_list else ""
+			image_list = ",".join(image_list) if image_list else ""
+			results[i]["image_thumbnail"] = image_thumbnail
+			results[i]["image_list"] = image_list
 
 		except:
 			print(results[i]['display_url'] + "  为问答或广告")
@@ -274,7 +363,7 @@ def save(results):
 	"""
 	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler', charset='utf8')
 	cursor = conn.cursor()
-	sql = "INSERT IGNORE INTO toutiao_app_combine_unique_20170608 (title, keywords, abstract, content, source," \
+	sql = "INSERT IGNORE INTO toutiao_app_combine_unique_20170620 (title, keywords, abstract, content, source," \
 		  "display_url, htmls, create_time, raw_class, raw_label, image_thumbnail, image_list, comment_count) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 	result_num = 1
 	for result in results:
@@ -299,8 +388,9 @@ def engine(page, proxy):
 	results = parse_page(content)
 	# if len(results) == 0:
 	# 	continue
+	dsi = DownloadSaveImage()
 	print("------正在爬取第{0}页文章，共{1}个------".format(page, len(results)))
-	results_more = parse_article(results, proxy)
+	results_more = parse_article(results, proxy, dsi)
 	print("------正在存储第{0}页文章，共{1}个------".format(page, len(results)))
 	save(results_more)
 
@@ -318,8 +408,7 @@ if __name__ == "__main__":
 		# engine(page)
 		if page % 25 == 0:
 			proxy = get_proxy.get_proxy()
-		print(proxy)
-		# engine(page, proxy)
+		engine(page, proxy)
 		# pool.apply_async(engine, (page, proxy))
 	pool.close()
 	pool.join()
