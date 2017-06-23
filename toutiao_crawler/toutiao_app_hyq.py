@@ -110,17 +110,17 @@ def get_comment_count(soup):
 	return False
 
 def judge_by_title(title):
-	pattern = re.compile("执业|执医|执照|狗|猪|通知")
+	pattern = re.compile("执业|执医|执照|狗|猪|通知|培训")
 
 	return re.search(pattern, title)
 
 def judge_by_content(content):
-	pattern = re.compile("兽医|taobao|jd")
+	pattern = re.compile("兽医|taobao|jd|投票|官网")
 
 	return re.search(pattern, content)
 
 def judge_by_source(source):
-	pattern = re.compile("养殖|猪")
+	pattern = re.compile("养殖|猪|电台|阅读|重疾不重|禽|兽")
 
 	return re.search(pattern, source)
 
@@ -130,7 +130,7 @@ def judge_conference(content, create_time, init=0.15):
 	"""
 
 	pattern1 = re.compile('([0-9]{4}年)\d{1,2}月\d{1,2}日')  # 年 月 日
-	pattern3 = re.compile('会议|论坛|通知|通讯|记者')
+	pattern3 = re.compile('会议|论坛|通知|通讯|记者|讯|举办|举行|活动|开展')
 
 	timedelta1 = timedelta(days=-3)
 	timedelta2 = timedelta(days=3)
@@ -164,7 +164,7 @@ def judge_conference(content, create_time, init=0.15):
 def judge_short(content):
 
 	length = len(content)
-	if length < 300:
+	if length < 400:
 		return True
 
 	return False
@@ -191,37 +191,51 @@ def sub_image_interlink_html(html):
 
 	return soup
 
-def judge_content_promotion(content):
-	"""
-	检查图片中是否包含推广内容
-	"""
-	pattern = re.compile("热线|微信|公众号|头条号")
+def judge_html_promotion(html):
+	pattern = re.compile("热线|微信|公众号|头条号|公号|公-众-号|微 信|二维码|关注|点击|咨询|联系方式|订阅|授权|转载|转自|邮箱|访问|网址|网站|文章来源|链接|报名|网 址|出处|官网|下载地址|原文|图片来源|图片来自|文章来自|了解更多|欢迎登录|为您推荐|详情|参考文献|精心推荐|详细新闻|中康体检|文章推荐|参考资料|文献参考|电话|版权")
+	return re.search(pattern, html)
 
-	return re.search(pattern, content)
 
-def get_promotion_part():
-	with open("data/news_promotion_part.txt") as f:
-		lines = f.readlines()
-		promotion_list = [line.strip() for line in lines]
-
-	return promotion_list
-
-def get_delete_promotion(promotion_list, content):
-	delete_promotion = []
-	for promotion in promotion_list:
-		if promotion in content:
-			delete_promotion.append(promotion)
-
-	return delete_promotion
-
-def sub_delete_promotion_html(html, promotion):
+def sub_html_promotion(html):
 	soup = BeautifulSoup(html, 'lxml')
-	for _ in soup.find_all("p"):
-		if promotion in _.get_text():
-			_.decompose()
+	promotion_list = ["热线", "微信", "公众号", "头条号", "公号", "公-众-号", "微 信", "关注", "二维码", "联系方式", "订阅", "点击", "咨询", "授权", "转载", "转自", "邮箱", "访问", "网址", "网站", "文章来源", "报名", "链接", "网 址", "出处", "官网", "下载地址", "原文", "图片来源", "图片来自", "文章来自", "了解更多", "欢迎登录", "为您推荐", "详情", "参考文献", "精心推荐", "详细新闻", "中康体检", "文章推荐", "参考资料", "文献参考", "电话", "版权"]
+
+	# 包含推广，则整段整段删除
+	for _ in soup.find_all(re.compile("p|h1")):
+		for promotion in promotion_list:
+			if promotion in _.get_text():
+				_.decompose()
 
 	return str(soup)
 
+def me_filter(content):
+	"""
+	清楚我过多的资讯
+	"""
+	pattern1 = re.compile('我们')
+	pattern2 = re.compile('我')
+
+	match1 = pattern1.findall(content)
+	num_we = len(match1)
+	match2 = pattern2.findall(content)
+	num_me = len(match2)
+
+	if num_me - num_we >= 12:
+		return True
+
+	return False
+
+def url_filter(content):
+	# url识别的正则表达式
+	pattern = re.compile('[\(|（|\[|①|②|③|：]?(https|http|www){1}(:|\.|[a-z]|\d|_|[A-Z]|/| |\?|%|=|&|#|;)+[\)|）|\]|］]?')
+
+	match = re.search(pattern, content)
+
+	if match:
+		spec = match.group()
+		return spec
+	else:
+		return False
 
 def parse_article(results, proxy, dsi):
 	"""
@@ -241,114 +255,134 @@ def parse_article(results, proxy, dsi):
 			wrong_results.append(results[i])
 			continue
 		soup = BeautifulSoup(article_html, 'lxml')
-		try:
-			# 常规字段添加
-			results[i]['create_time'] = soup.find_all(class_='time')[0].get_text()
-			results[i]['content'] = soup.find_all(class_='article-content')[0].get_text()
-			results[i]['htmls'] = str(soup.find_all(class_='article-content')[0])
-			news_class = soup.find_all(ga_event="click_channel")[0].get_text()
+		# try:
+		# 常规字段添加
+		results[i]['create_time'] = soup.find_all(class_='time')[0].get_text()
+		results[i]['content'] = soup.find_all(class_='article-content')[0].get_text()
+		results[i]['htmls'] = str(soup.find_all(class_='article-content')[0])
+		news_class = soup.find_all(ga_event="click_channel")[0].get_text()
 
-			# 主题不是健康的去除！！不能放前面，不然等会remove去除不好去除。保险起见。可优化
-			if news_class == "健康":
-				news_label_list = ",".join(soup.find_all(class_="label-list")[0].get_text().split())
-				# 添加原生资讯的主题，标签
-				results[i]['raw_class'] = news_class
-				results[i]['raw_label'] = news_label_list
-			else:
-				wrong_results.append(results[i])
-				continue  # continue直接跳出这一次循环，然后通过wrong_results在后面把这个残缺的result去除
-
-			# 过滤文字中包含推广的，如果可以修正，则修正保存，不能修正，则清除
-			if judge_content_promotion(results[i]['content']):
-				promotion_list = get_promotion_part()
-				# 查看是否有可替换的字段
-				delete_promotion = get_delete_promotion(promotion_list, results[i]['content'])
-				if not delete_promotion:
-					# 如果我们总结的特殊字段在内容中没有，那么这个资讯直接删掉
-					wrong_results.append(results[i])
-					continue
-				else:
-					# 如果我们总结的特殊字段在内容中有，那么这个资讯要修正
-					for promotion in delete_promotion:
-						results[i]['content'] = results[i]['content'].replace(promotion, "")
-						results[i]['htmls'] = sub_delete_promotion_html(results[i]['htmls'], promotion)
-
-			# 界面没有评论字段的去除！！
-			comment_count = get_comment_count(soup)
-			if comment_count:
-				results[i]['comment_count'] = comment_count
-			else:
-				wrong_results.append(results[i])
-				continue
-
-			# 去除文本内容很少的
-			if not judge_short(results[i]['content']):
-				pass
-			else:
-				wrong_results.append(results[i])
-
-			# 去除会议新闻，基于时间判断
-			if not judge_conference(results[i]['content'], results[i]['create_time']):
-				pass
-			else:
-				wrong_results.append(results[i])
-				continue
-
-			# 根据标题清除
-			if not judge_by_title(results[i]['title']):
-				pass
-			else:
-				wrong_results.append(results[i])
-				continue
-
-			# 根据内容清除
-			if not judge_by_content(results[i]['content']):
-				pass
-			else:
-				wrong_results.append(results[i])
-				continue
-
-			# 根据来源清除
-			if not judge_by_source(results[i]['source']):
-				pass
-			else:
-				wrong_results.append(results[i])
-				continue
-
-			# 修正图片里面包含内链的
-			if judge_image_interlink(results[i]['content']):
-				results[i]['content'] = sub_image_interlink_content(results[i]['content'])
-				results[i]['htmls'] = sub_image_interlink_html(results[i]['htmls'])
-
-			# 替换图片链接
-			img_src_list = dsi.get_image_src(results[i]['htmls'])
-			for url in img_src_list:
-				try:
-					img_content = dsi.download(url)
-				except:
-					# print("------图片不能下载------url:{0}".format(url))
-					continue
-				path_url = dsi.get_file_path()
-				save_path = path_url[0]
-				save_url = path_url[1]
-				try:
-					dsi.upyun_save(img_content, save_path)
-				except:
-					# print("------图片不能存储------url:{0}".format(url))
-					continue
-				results[i]['htmls'] = results[i]['htmls'].replace(url, save_url)
-
-			# 添加image_thumbnail和image_list
-			soup = BeautifulSoup(results[i]['htmls'])
-			image_list = get_image_list(soup)
-			image_thumbnail = image_list[0] if image_list else ""
-			image_list = ",".join(image_list) if image_list else ""
-			results[i]["image_thumbnail"] = image_thumbnail
-			results[i]["image_list"] = image_list
-
-		except:
-			print(results[i]['display_url'] + "  为问答或广告")
+		# 主题不是健康的去除！！不能放前面，不然等会remove去除不好去除。保险起见。可优化
+		if news_class == "健康":
+			news_label_list = ",".join(soup.find_all(class_="label-list")[0].get_text().split())
+			# 添加原生资讯的主题，标签
+			results[i]['raw_class'] = news_class
+			results[i]['raw_label'] = news_label_list
+		else:
 			wrong_results.append(results[i])
+			continue  # continue直接跳出这一次循环，然后通过wrong_results在后面把这个残缺的result去除
+
+		# 过滤文字中包含推广的，只修正html，content不修正
+		if judge_html_promotion(results[i]['htmls']):
+			# 如果有特殊字段，则清洗节点
+			results[i]['htmls'] = sub_html_promotion(results[i]['htmls'])
+
+
+		# 界面没有评论字段的去除！！
+		comment_count = get_comment_count(soup)
+		if comment_count:
+			results[i]['comment_count'] = comment_count
+		else:
+			wrong_results.append(results[i])
+			continue
+
+		# 去除文本内容很少的
+		if not judge_short(results[i]['content']):
+			pass
+		else:
+			wrong_results.append(results[i])
+
+		# 去除会议新闻，基于时间判断
+		if not judge_conference(results[i]['content'], results[i]['create_time']):
+			pass
+		else:
+			wrong_results.append(results[i])
+			continue
+
+		# 根据标题清除
+		if not judge_by_title(results[i]['title']):
+			pass
+		else:
+			wrong_results.append(results[i])
+			continue
+
+		# 根据内容清除
+		if not judge_by_content(results[i]['content']):
+			pass
+		else:
+			wrong_results.append(results[i])
+			continue
+
+		# 根据来源清除
+		if not judge_by_source(results[i]['source']):
+			pass
+		else:
+			wrong_results.append(results[i])
+			continue
+
+		# 我过多的资讯清除
+		if not me_filter(results[i]['content']):
+			pass
+		else:
+			wrong_results.append(results[i])
+			continue
+
+		# 过滤文本中包含url的，然后只改html，content不改！！
+		# 有多个url，重复替换！！
+		spec = 1
+		j = 1
+		while spec:
+			spec = url_filter(results[i]['content'])
+			if not spec:
+				break
+			results[i]['htmls'] = results[i]['htmls'].replace(spec, "")
+			results[i]['content'] = BeautifulSoup(results[i]['htmls'], 'lxml').get_text()
+			j += 1
+			# 链接过多的，直接当做坏文本
+			if j == 5:
+				wrong_results.append(results[i])
+				break
+
+		if j == 5:
+			continue
+
+
+		# 修正图片里面包含内链的
+		if judge_image_interlink(results[i]['content']):
+			results[i]['content'] = sub_image_interlink_content(results[i]['content'])
+			results[i]['htmls'] = sub_image_interlink_html(results[i]['htmls'])
+
+		# 替换图片链接
+		img_src_list = dsi.get_image_src(results[i]['htmls'])
+		for url in img_src_list:
+			try:
+				img_content = dsi.download(url)
+			except:
+				# print("------图片不能下载------url:{0}".format(url))
+				continue
+			path_url = dsi.get_file_path()
+			save_path = path_url[0]
+			save_url = path_url[1]
+			try:
+				dsi.upyun_save(img_content, save_path)
+			except:
+				# print("------图片不能存储------url:{0}".format(url))
+				continue
+			results[i]['htmls'] = results[i]['htmls'].replace(url, save_url)
+
+
+		# 添加image_thumbnail和image_list
+		# 这里要重新soup一遍，千万别忘了！！
+		soup = BeautifulSoup(results[i]['htmls'], 'lxml')
+		image_list = get_image_list(soup)
+		image_thumbnail = image_list[0] if image_list else ""
+		image_list = ",".join(image_list) if image_list else ""
+		results[i]["image_thumbnail"] = image_thumbnail
+		results[i]["image_list"] = image_list
+
+		# except:
+		# 	print(results[i]['display_url'] + "  为问答或广告")
+		# 	wrong_results.append(results[i])
 
 	for wrong in wrong_results:
 		results.remove(wrong)
@@ -361,9 +395,9 @@ def save(results):
 	"""
 	存储结果到MySQL
 	"""
-	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler', charset='utf8')
+	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler', charset='utf8')
 	cursor = conn.cursor()
-	sql = "INSERT IGNORE INTO toutiao_app_combine_unique_20170620 (title, keywords, abstract, content, source," \
+	sql = "INSERT IGNORE INTO toutiao_app_combine_unique_20170623 (title, keywords, abstract, content, source," \
 		  "display_url, htmls, create_time, raw_class, raw_label, image_thumbnail, image_list, comment_count) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 	result_num = 1
 	for result in results:

@@ -11,9 +11,9 @@ def get_samples():
 	"""
 	抽取样本
 	"""
-	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler', charset='utf8')
+	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler', charset='utf8')
 	cursor = conn.cursor()
-	sql = "select title, abstract, htmls, display_url, id from toutiao_app_combine_unique_20170608"
+	sql = "select title, abstract, htmls, display_url, id from toutiao_app_combine_unique_20170623"
 	cursor.execute(sql)
 	conn.commit()
 

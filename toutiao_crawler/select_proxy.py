@@ -26,7 +26,7 @@ class SelectProxy(object):
 			return False
 
 	def clear_proxy(self):
-		conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler', charset='utf8')
+		conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler', charset='utf8')
 		cursor = conn.cursor()
 		sql = "delete from valid_proxy"
 		cursor.execute(sql)
@@ -40,7 +40,7 @@ class SelectProxy(object):
 		:param valid_proxy:
 		:return:
 		"""
-		conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler', charset='utf8')
+		conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler', charset='utf8')
 		cursor = conn.cursor()
 		sql = 'INSERT valid_proxy(proxy) VALUES(%s)'
 		cursor.execute(sql, (valid_proxy,))

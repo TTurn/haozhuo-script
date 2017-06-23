@@ -7,21 +7,22 @@ import json
 def get_message(id):
 	"""
 	{
-    "title": "xxx",
-    "keywords": "xxx",
-    "abstracts": "xxx",
-    "content": "",
-    "source": "xxx",
-    "htmls": "xxx",
-    "create_time": "2017-11-11 11:11:11",
-    "crawler_time": "2017-11-11 11:11:11",
-    "information_labels_ids": "xxx"
-    }
+  "title": "string",
+  "keywords": "string",
+  "abstracts": "string",
+  "content" : "string",
+  "source": "string",
+  "display_url": "string",
+  "htmls": "string",
+"source":"string",
+  "create_time": "time",
+  "crawler_time": "time",
+  "fingerprint": "empty"}
 	"""
-	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler',
+	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler',
 						   charset='utf8')
 	cursor = conn.cursor()
-	sql = "select title, keywords, abstract, content, source, htmls, create_time, crawler_time, information_labels_ids from toutiao_app_combine_unique_20170608 where id = %s"
+	sql = "select title, keywords, abstract, content, source, htmls, create_time, crawler_time, information_labels_ids from toutiao_app_combine_unique_20170623 where id = %s"
 	cursor.execute(sql, id)
 	conn.commit()
 	result = cursor.fetchall()[0]
@@ -32,7 +33,7 @@ def get_message(id):
 
 def engine():
 	test_ids = [29777, 2150, 37666, 1626, 29777, 2150, 37666, 1626, 29777, 2150, 37666, 1626]
-	client = KafkaClient(hosts="192.168.1.152:9092, 192.168.1.153:9092")
+	client = KafkaClient(hosts="datanode1:9092,datanode2:9092,datanode3:9092")
 
 	topic = client.topics['dev-dataetl-articlefilter'.encode('utf-8')]
 

@@ -13,7 +13,7 @@ class GetProxy(object):
 		从数据库中批量抽取代理，选取任一代理，并再次验证，最终返回有效代理
 		:return: 任一有效代理
 		"""
-		conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler', charset='utf8')
+		conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler', charset='utf8')
 		cursor = conn.cursor()
 		sql = 'SELECT proxy FROM valid_proxy'
 		cursor.execute(sql)

@@ -48,10 +48,10 @@ class DownloadSaveImage():
 		"""
 		得到id,htmls
 		"""
-		conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler',
+		conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler',
 							   charset='utf8')
 		cursor = conn.cursor()
-		sql = "select id, htmls from toutiao_app_combine_unique_20170620 where crawler_time > '2017-06-20 00:00:00'"
+		sql = "select id, htmls from toutiao_app_combine_unique_20170623 where crawler_time > '2017-06-20 00:00:00'"
 		cursor.execute(sql)
 		conn.commit()
 		id_htmls = cursor.fetchall()
@@ -86,10 +86,10 @@ class DownloadSaveImage():
 		"""
 		把新生成的hmtl更新到数据库中
 		"""
-		conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler',
+		conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler',
 							   charset='utf8')
 		cursor = conn.cursor()
-		sql = "UPDATE toutiao_app_combine_unique_20170620 SET htmls = %s WHERE id = %s"
+		sql = "UPDATE toutiao_app_combine_unique_20170623 SET htmls = %s WHERE id = %s"
 		values = (html, id)
 		cursor.execute(sql, values)
 		conn.commit()

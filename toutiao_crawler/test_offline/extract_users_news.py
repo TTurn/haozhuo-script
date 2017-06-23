@@ -16,10 +16,10 @@ def get_labels():
 	return labels
 
 def get_url_content():
-	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler',
+	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler',
 						   charset='utf8')
 	cursor = conn.cursor()
-	sql = "select content, display_url from toutiao_app_combine_unique_20170620"
+	sql = "select content, display_url from toutiao_app_combine_unique_20170623"
 	cursor.execute(sql)
 	conn.commit()
 

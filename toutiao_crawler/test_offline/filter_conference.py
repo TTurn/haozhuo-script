@@ -9,16 +9,16 @@ from datetime import timedelta
 
 def get_samples():
 	print("----获取样本----")
-	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler', charset='utf8')
+	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler', charset='utf8')
 	cursor = conn.cursor()
 
-	sql = "select id from toutiao_app_combine_unique_20170620"
+	sql = "select id from toutiao_app_combine_unique_20170623"
 	cursor.execute(sql)
 	conn.commit()
 	length = len(cursor.fetchall())
 	print("共有{0}个样本".format(length))
 
-	sql = "select id, title, content, create_time from toutiao_app_combine_unique_20170620"
+	sql = "select id, title, content, create_time from toutiao_app_combine_unique_20170623"
 	cursor.execute(sql)
 	conn.commit()
 
@@ -38,7 +38,7 @@ def filter(id_list, contents, create_time_list, init=0.15):
 
 	pattern1 = re.compile(r'([0-9]{4}年)\d{1,2}月\d{1,2}日')  # 年 月 日
 	pattern2 = re.compile(r'\d{1,2}月\d{1,2}日')    #月 日
-	pattern3 = re.compile(r'会议|论坛|通知|通讯|记者')
+	pattern3 = re.compile(r'会议|论坛|通知|通讯|记者|讯|举办|举行|活动|开展')
 
 	delete_id_list = []
 	timedelta1 = timedelta(days=-3)
@@ -98,14 +98,14 @@ def filter(id_list, contents, create_time_list, init=0.15):
 	# print(len(delete_id_list))
 
 def delete_news(delete_id_list):
-	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler',
+	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler',
 						   charset='utf8')
 	cursor = conn.cursor()
 
 	for i in range(len(delete_id_list)):
 		id = delete_id_list[i]
 		print("正在删除第{0}篇文章".format(i+1))
-		sql = "delete from toutiao_app_combine_unique_20170620 where id = %s"
+		sql = "delete from toutiao_app_combine_unique_20170623 where id = %s"
 		cursor.execute(sql, (id, ))
 		conn.commit()
 

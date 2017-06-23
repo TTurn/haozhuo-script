@@ -8,10 +8,10 @@ import pymysql
 from bs4 import BeautifulSoup
 
 def get_id_html():
-	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler',
+	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler',
 						   charset='utf8')
 	cursor = conn.cursor()
-	sql = "select id, htmls from toutiao_app_combine_unique_20170620"
+	sql = "select id, htmls from toutiao_app_combine_unique_20170623"
 	cursor.execute(sql)
 	conn.commit()
 
@@ -36,7 +36,7 @@ def extract_image(html):
 	return image_list
 
 def save_image(ids, htmls):
-	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler',
+	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler',
 						   charset='utf8')
 	cursor = conn.cursor()
 
@@ -45,7 +45,7 @@ def save_image(ids, htmls):
 		id = ids[i]
 		html = htmls[i]
 		image_list = extract_image(html)
-		sql = "UPDATE toutiao_app_combine_unique_20170620 SET image_thumbnail = %s, image_list = %s WHERE id = %s"
+		sql = "UPDATE toutiao_app_combine_unique_20170623 SET image_thumbnail = %s, image_list = %s WHERE id = %s"
 		image_thumbnail = image_list[0] if image_list else ""
 		image_list = ",".join(image_list) if image_list else ""
 		cursor.execute(sql, (image_thumbnail, image_list, id))

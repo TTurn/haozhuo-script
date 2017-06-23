@@ -8,11 +8,11 @@ from bs4 import BeautifulSoup
 
 def get_samples():
 	print("----获取样本----")
-	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler', charset='utf8')
+	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler', charset='utf8')
 	cursor = conn.cursor()
 
 
-	sql = "select id, content, htmls from toutiao_app_combine_unique_20170620 where content regexp '热线|微信|公众号|头条号'"
+	sql = "select id, content, htmls from toutiao_app_combine_unique_20170623 where content regexp '热线|微信|公众号|头条号|公号|公-众-号|微 信|二维码|关注|点击|咨询|联系方式'"
 	cursor.execute(sql)
 	conn.commit()
 
@@ -31,7 +31,7 @@ def get_samples():
 
 
 def get_promotion_part():
-	with open("data/news_promotion_part.txt") as f:
+	with open("../data/news_promotion_part.txt") as f:
 		lines = f.readlines()
 		promotion_list = [line.strip() for line in lines]
 
@@ -80,21 +80,21 @@ def sub_html(html, promotion):
 	return str(soup)
 
 def delete_news(id):
-	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler',
+	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler',
 						   charset='utf8')
 	cursor = conn.cursor()
-	sql = "delete from toutiao_app_combine_unique_20170620 where id = %s"
+	sql = "delete from toutiao_app_combine_unique_20170623 where id = %s"
 	cursor.execute(sql, (id,))
 	conn.commit()
 	cursor.close()
 	conn.close()
 
 def revise_news(id, content_clean, html_clean):
-	conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='he123456', db='news_crawler',
+	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler',
 						   charset='utf8')
 	cursor = conn.cursor()
 
-	sql = "update toutiao_app_combine_unique_20170620 set content = %s, htmls = %s where id = %s"
+	sql = "update toutiao_app_combine_unique_20170623 set content = %s, htmls = %s where id = %s"
 	cursor.execute(sql, (content_clean, html_clean, id))
 	conn.commit()
 

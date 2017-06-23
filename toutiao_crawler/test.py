@@ -1,11 +1,18 @@
+# coding:utf-8
+
 import re
+from bs4 import BeautifulSoup
 
-a = "hello_world"
+# a = '<div class="article-content"><div><p><img alt="什么杯子喝水最健康？" img_height="375" img_width="600" inline="0" src="http://article.image.ihaozhuo.com/2017/06/07/14967977519362119.png"/></p><p>人不吃不喝一般只能活7到10天，而喝了水就可以延长到半个月甚至更久！成人每天要喝1500毫升-2000毫升水，喝水对于人来说是十分重要的，而选杯子和喝水一样是一辈子的事儿，如果选错了杯子，给健康带来的将是一枚随时引爆的定时炸弹！</p><p><strong>一、一次性纸杯的第一杯水最致命！</strong></p><p><img alt="什么杯子喝水最健康？" img_height="325" img_width="600" inline="0" src="http://article.image.ihaozhuo.com/2017/06/07/14967977524339439.png"/></p><p>一次性纸杯看起来卫生、方便，其实产品合格率无法判断。有的纸杯生产厂家为使杯子看上去更白，加入大量荧光增白剂，而这种荧光物质可使细胞产生变异，进入人体会成为潜在的致癌因素。</p><p><img alt="什么杯子喝水最健康？" img_height="600" img_width="600" inline="0" src="http://article.image.ihaozhuo.com/2017/06/07/14967977525979650.png"/></p><p>别被它的外表欺骗了，它可深藏剧毒</p><p>另外一次性纸杯内壁常涂一层蜡，若水温超40℃，蜡会溶化，若你不幸碰到不法厂家使用工业石蜡镀膜做的纸杯，这种有害物质进入体内，人体的神经系统和造血系统都将受到严重损伤！</p><p><img alt="什么杯子喝水最健康？" img_height="332" img_width="600" inline="0" src="http://article.image.ihaozhuo.com/2017/06/07/14967977530746354.png"/></p><p>常见的咖啡纸杯</p><p>所以不到万不得已，不要用一次性纸杯喝水，如果真的没办法，建议一次性纸杯的第一杯水不要喝，等四五分钟后将水倒掉，使有害物质挥发。</p><p><strong>二、内壁“挂彩”的杯子不要碰！</strong></p><p><img alt="什么杯子喝水最健康？" img_height="379" img_width="600" inline="0" src="http://article.image.ihaozhuo.com/2017/06/07/14967977532032821.png"/></p><p>彩色杯的致命诱惑</p><p>五颜六色的杯子很吸引人，但最好别用。颜色就像毒蘑菇一样，越艳越藏毒，尤其那些内壁还有颜色涂有釉的，当杯子盛入开水或者酸、碱性偏高的饮料时，这些颜料中的铅等有毒重金属元素就容易溶解在液体中，趁机进入人体。</p><p><img alt="什么杯子喝水最健康？" img_height="389" img_width="600" inline="0" src="http://article.image.ihaozhuo.com/2017/06/07/14967977535131845.png"/></p><p>建议在挑杯子花纹时尽量选白色等浅色系杯子，并确保内壁一定为原色，盛水部分无任何印花最佳！</p><p><strong>三、金属材质水杯喝咖啡小心重金属！</strong></p><p><img alt="什么杯子喝水最健康？" img_height="408" img_width="600" inline="0" src="http://article.image.ihaozhuo.com/2017/06/07/14967977537363251.png"/></p><p>金属材质的杯子，如不锈钢等，价格较陶瓷杯子要贵。搪瓷杯构成中含有的金属元素通常状况下比较稳定，但在酸性环境下，这些金属元素有可能溶出，用于喝咖啡、橙汁等酸性饮料并不安全。</p><p>在选择不锈钢水杯时，一定要认准是304不锈钢材质的水杯，一般来讲304不锈钢不会对人体造成危害。www.idduu.com</p><p><strong>四、塑料水杯易藏污纳垢</strong></p><p><img alt="什么杯子喝水最健康？" img_height="600" img_width="600" inline="0" src="http://article.image.ihaozhuo.com/2017/06/07/14967977540835318.png"/></p><p>塑料中常添加有增塑剂，其中含有一些有毒的化学物质，用塑料杯装热水或开水的时候，有毒的化学物质就很容易稀释到水中，并且塑料的内部微观构造有很多的孔隙，其中隐藏着污物，清洗不净就会容易滋生细菌。</p><p>所以，在选购塑料杯时，一定要选择符合国家标准的食用级塑料所制的水杯。</p><p><img alt="什么杯子喝水最健康？" img_height="417" img_width="600" inline="0" src="http://article.image.ihaozhuo.com/2017/06/07/14967977542555799.png"/></p><p><strong>“1号”</strong>(聚乙烯对苯二甲酸酯)宝特瓶：饮料瓶不能循环使用装热水，这种材料耐热至70℃，只适合装暖饮或冻饮，装高温会有释放有害物质。这种塑料制品用了10个月后，可能释放出致癌物。因此，建议这种杯子用完了就要丢掉。</p><p><strong>“2号”</strong>HDPE（高密度聚乙烯）：可耐110℃高温，可用来盛装食品。</p><p><strong>“3号”</strong>PVC聚乙烯：3号“的聚氯乙烯（PVC），这种材质只能耐热81℃，稍微的高温就会释放致癌物质，所以绝对不要购买此材质水杯。</p><p><strong>“4号”</strong>LDPE（低密度聚乙烯）：保鲜膜、塑料膜等都是这种材质，耐热性不强。</p><p><strong>“5号”</strong>PP聚丙烯：微波炉餐具采用这种材质制成，耐130℃高温，透明度差，这是唯一可以放进微波炉的塑料，在小心清洁后可重复使用。</p><p><strong>“6号”</strong>PS（聚苯乙烯）：一般用于泡面盒、发泡快餐盒。此类材质水杯不能用于盛装强酸（如柳橙汁）、强碱性物质，会分解出对人体不好的聚苯乙烯。</p><p><strong>“7号”</strong>PC其它类塑料制品：多用于制造奶瓶、太空杯等，因为含有双酚A而备受争议。</p><p>如果大家考虑杯子的抗击打性而选择塑料杯，建议最好是购买5号pp塑料水杯或者7号other特里坦水杯（注意不是“7号pc”）。使用时勿加热，勿在阳光下直射，不用洗碗机、烘碗机清洗水杯。第一次使用前，用小苏打粉加温水清洗，在室温中自然烘干。如果容器有任何摔伤或破损，建议停止使用，因为塑料制品表面如果有细微的坑纹，容易藏细菌。</p><p><strong>五、无彩釉涂染的陶瓷杯最安全</strong></p><p><img alt="什么杯子喝水最健康？" img_height="339" img_width="600" inline="0" src="http://article.image.ihaozhuo.com/2017/06/07/14967977544045134.png"/></p><p>喝水首选无彩釉涂染的陶瓷杯，尤其是内壁要无色。不仅材质安全，能耐高温，还有相对较好的保温效果，喝热水或喝茶都是不错的选择。</p><p>六、紫砂水杯泡茶最适宜</p><p><img alt="什么杯子喝水最健康？" img_height="468" img_width="600" inline="0" src="http://article.image.ihaozhuo.com/2017/06/07/14967977545667890.png"/></p><p>紫砂透气性优良，泡茶不易走味，茶叶不易变质。</p><p><strong>七、玻璃杯最健康</strong></p><p>玻璃杯在烧制的过程中不含有机的化学物质，当人们用玻璃杯喝水或其他饮品的时候，不必担心化学物质会被喝进肚里去，而且玻璃表面光滑，容易清洗，细菌和污垢不容易在杯壁滋生，所以人们用玻璃杯喝水是最健康、最安全的。</p><p><img alt="什么杯子喝水最健康？" img_height="450" img_width="600" inline="0" src="http://article.image.ihaozhuo.com/2017/06/07/14967977547227191.png"/></p></div></div>'
+#
+# a = BeautifulSoup(a, 'lxml').get_text()
+# a = "www.baidu.com你知道吗www.qq.com"
+# pattern = re.compile('[\(|（|\[|①|②|③|：]?(https|http|www){1}(:|\.|[a-z]|\d|_|[A-Z]|/|\?|%|=|&|#)+[\)|）|\]]?')
+#
+# print(re.findall(pattern, a))
 
-p1 = re.compile("h")
-p2 = re.compile("a")
+a = None
 
-if re.search(p1, a):
-	print(1)
-if not re.search(p2, a):
-	print(2)
+b = "hello"
+
+print(b.replace(a, ""))
