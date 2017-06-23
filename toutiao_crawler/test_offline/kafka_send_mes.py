@@ -3,6 +3,7 @@
 from pykafka import KafkaClient
 import pymysql
 import json
+import time
 
 def get_message(id):
 	"""
@@ -25,7 +26,7 @@ def get_message(id):
 	conn.commit()
 	result = cursor.fetchall()[0]
 	message = {"title": result[0], "abstracts": result[1], "source": result[2],
-			   "htmls": result[3], "create_time": str(result[4]), "image_thumbnail": result[5], "image_list": result[6], "content": result[7], "display_url": result[8], "crawler_time": result[9]}
+			   "htmls": result[3], "create_time": str(result[4]), "image_thumbnail": result[5], "image_list": result[6], "content": result[7], "display_url": result[8], "crawler_time": str(result[9])}
 
 	return json.dumps(message, ensure_ascii=False)
 
@@ -36,7 +37,7 @@ def get_id_list():
 	sql = "select id from toutiao_app_combine_unique_20170623"
 	cursor.execute(sql)
 	conn.commit()
-	results = cursor.fetchall()[0]
+	results = cursor.fetchall()
 	id_list = [result[0] for result in results]
 
 	return id_list
@@ -50,6 +51,7 @@ def engine(id_list):
 		for i in range(len(id_list)):
 			id = id_list[i]
 			print("---正在发送第{0}篇文章给kafka---".format(i+1))
+			time.sleep(1)
 			mes = get_message(id)
 			producer.produce(mes.encode('utf-8'))
 
