@@ -18,6 +18,8 @@ import re
 from datetime import datetime
 from datetime import timedelta
 from image_save.download_save_image import DownloadSaveImage
+from pykafka import KafkaClient
+
 
 def download_page(proxy):
 	"""
@@ -255,134 +257,134 @@ def parse_article(results, proxy, dsi):
 			wrong_results.append(results[i])
 			continue
 		soup = BeautifulSoup(article_html, 'lxml')
-		# try:
-		# 常规字段添加
-		results[i]['create_time'] = soup.find_all(class_='time')[0].get_text()
-		results[i]['content'] = soup.find_all(class_='article-content')[0].get_text()
-		results[i]['htmls'] = str(soup.find_all(class_='article-content')[0])
-		news_class = soup.find_all(ga_event="click_channel")[0].get_text()
+		try:
+			# 常规字段添加
+			results[i]['create_time'] = soup.find_all(class_='time')[0].get_text()
+			results[i]['content'] = soup.find_all(class_='article-content')[0].get_text()
+			results[i]['htmls'] = str(soup.find_all(class_='article-content')[0])
+			news_class = soup.find_all(ga_event="click_channel")[0].get_text()
 
-		# 主题不是健康的去除！！不能放前面，不然等会remove去除不好去除。保险起见。可优化
-		if news_class == "健康":
-			news_label_list = ",".join(soup.find_all(class_="label-list")[0].get_text().split())
-			# 添加原生资讯的主题，标签
-			results[i]['raw_class'] = news_class
-			results[i]['raw_label'] = news_label_list
-		else:
-			wrong_results.append(results[i])
-			continue  # continue直接跳出这一次循环，然后通过wrong_results在后面把这个残缺的result去除
-
-		# 过滤文字中包含推广的，只修正html，content不修正
-		if judge_html_promotion(results[i]['htmls']):
-			# 如果有特殊字段，则清洗节点
-			results[i]['htmls'] = sub_html_promotion(results[i]['htmls'])
-
-
-		# 界面没有评论字段的去除！！
-		comment_count = get_comment_count(soup)
-		if comment_count:
-			results[i]['comment_count'] = comment_count
-		else:
-			wrong_results.append(results[i])
-			continue
-
-		# 去除文本内容很少的
-		if not judge_short(results[i]['content']):
-			pass
-		else:
-			wrong_results.append(results[i])
-
-		# 去除会议新闻，基于时间判断
-		if not judge_conference(results[i]['content'], results[i]['create_time']):
-			pass
-		else:
-			wrong_results.append(results[i])
-			continue
-
-		# 根据标题清除
-		if not judge_by_title(results[i]['title']):
-			pass
-		else:
-			wrong_results.append(results[i])
-			continue
-
-		# 根据内容清除
-		if not judge_by_content(results[i]['content']):
-			pass
-		else:
-			wrong_results.append(results[i])
-			continue
-
-		# 根据来源清除
-		if not judge_by_source(results[i]['source']):
-			pass
-		else:
-			wrong_results.append(results[i])
-			continue
-
-		# 我过多的资讯清除
-		if not me_filter(results[i]['content']):
-			pass
-		else:
-			wrong_results.append(results[i])
-			continue
-
-		# 过滤文本中包含url的，然后只改html，content不改！！
-		# 有多个url，重复替换！！
-		spec = 1
-		j = 1
-		while spec:
-			spec = url_filter(results[i]['content'])
-			if not spec:
-				break
-			results[i]['htmls'] = results[i]['htmls'].replace(spec, "")
-			results[i]['content'] = BeautifulSoup(results[i]['htmls'], 'lxml').get_text()
-			j += 1
-			# 链接过多的，直接当做坏文本
-			if j == 5:
+			# 主题不是健康的去除！！不能放前面，不然等会remove去除不好去除。保险起见。可优化
+			if news_class == "健康":
+				news_label_list = ",".join(soup.find_all(class_="label-list")[0].get_text().split())
+				# 添加原生资讯的主题，标签
+				results[i]['raw_class'] = news_class
+				results[i]['raw_label'] = news_label_list
+			else:
 				wrong_results.append(results[i])
-				break
+				continue  # continue直接跳出这一次循环，然后通过wrong_results在后面把这个残缺的result去除
 
-		if j == 5:
-			continue
+			# 过滤文字中包含推广的，只修正html，content不修正
+			if judge_html_promotion(results[i]['htmls']):
+				# 如果有特殊字段，则清洗节点
+				results[i]['htmls'] = sub_html_promotion(results[i]['htmls'])
 
 
-		# 修正图片里面包含内链的
-		if judge_image_interlink(results[i]['content']):
-			results[i]['content'] = sub_image_interlink_content(results[i]['content'])
-			results[i]['htmls'] = sub_image_interlink_html(results[i]['htmls'])
-
-		# 替换图片链接
-		img_src_list = dsi.get_image_src(results[i]['htmls'])
-		for url in img_src_list:
-			try:
-				img_content = dsi.download(url)
-			except:
-				# print("------图片不能下载------url:{0}".format(url))
+			# 界面没有评论字段的去除！！
+			comment_count = get_comment_count(soup)
+			if comment_count:
+				results[i]['comment_count'] = comment_count
+			else:
+				wrong_results.append(results[i])
 				continue
-			path_url = dsi.get_file_path()
-			save_path = path_url[0]
-			save_url = path_url[1]
-			try:
-				dsi.upyun_save(img_content, save_path)
-			except:
-				# print("------图片不能存储------url:{0}".format(url))
+
+			# 去除文本内容很少的
+			if not judge_short(results[i]['content']):
+				pass
+			else:
+				wrong_results.append(results[i])
+
+			# 去除会议新闻，基于时间判断
+			if not judge_conference(results[i]['content'], results[i]['create_time']):
+				pass
+			else:
+				wrong_results.append(results[i])
 				continue
-			results[i]['htmls'] = results[i]['htmls'].replace(url, save_url)
+
+			# 根据标题清除
+			if not judge_by_title(results[i]['title']):
+				pass
+			else:
+				wrong_results.append(results[i])
+				continue
+
+			# 根据内容清除
+			if not judge_by_content(results[i]['content']):
+				pass
+			else:
+				wrong_results.append(results[i])
+				continue
+
+			# 根据来源清除
+			if not judge_by_source(results[i]['source']):
+				pass
+			else:
+				wrong_results.append(results[i])
+				continue
+
+			# 我过多的资讯清除
+			if not me_filter(results[i]['content']):
+				pass
+			else:
+				wrong_results.append(results[i])
+				continue
+
+			# 过滤文本中包含url的，然后只改html，content不改！！
+			# 有多个url，重复替换！！
+			spec = 1
+			j = 1
+			while spec:
+				spec = url_filter(results[i]['content'])
+				if not spec:
+					break
+				results[i]['htmls'] = results[i]['htmls'].replace(spec, "")
+				results[i]['content'] = BeautifulSoup(results[i]['htmls'], 'lxml').get_text()
+				j += 1
+				# 链接过多的，直接当做坏文本
+				if j == 5:
+					wrong_results.append(results[i])
+					break
+
+			if j == 5:
+				continue
 
 
-		# 添加image_thumbnail和image_list
-		# 这里要重新soup一遍，千万别忘了！！
-		soup = BeautifulSoup(results[i]['htmls'], 'lxml')
-		image_list = get_image_list(soup)
-		image_thumbnail = image_list[0] if image_list else ""
-		image_list = ",".join(image_list) if image_list else ""
-		results[i]["image_thumbnail"] = image_thumbnail
-		results[i]["image_list"] = image_list
+			# 修正图片里面包含内链的
+			if judge_image_interlink(results[i]['content']):
+				results[i]['content'] = sub_image_interlink_content(results[i]['content'])
+				results[i]['htmls'] = sub_image_interlink_html(results[i]['htmls'])
 
-		# except:
-		# 	print(results[i]['display_url'] + "  为问答或广告")
-		# 	wrong_results.append(results[i])
+			# 替换图片链接
+			img_src_list = dsi.get_image_src(results[i]['htmls'])
+			for url in img_src_list:
+				try:
+					img_content = dsi.download(url)
+				except:
+					# print("------图片不能下载------url:{0}".format(url))
+					continue
+				path_url = dsi.get_file_path()
+				save_path = path_url[0]
+				save_url = path_url[1]
+				try:
+					dsi.upyun_save(img_content, save_path)
+				except:
+					# print("------图片不能存储------url:{0}".format(url))
+					continue
+				results[i]['htmls'] = results[i]['htmls'].replace(url, save_url)
+
+
+			# 添加image_thumbnail和image_list
+			# 这里要重新soup一遍，千万别忘了！！
+			soup = BeautifulSoup(results[i]['htmls'], 'lxml')
+			image_list = get_image_list(soup)
+			image_thumbnail = image_list[0] if image_list else ""
+			image_list = ",".join(image_list) if image_list else ""
+			results[i]["image_thumbnail"] = image_thumbnail
+			results[i]["image_list"] = image_list
+
+		except:
+			print(results[i]['display_url'] + "  为问答或广告")
+			wrong_results.append(results[i])
 
 	for wrong in wrong_results:
 		results.remove(wrong)
@@ -414,6 +416,23 @@ def save(results):
 	cursor.close()
 	conn.close()
 
+def send_kafka(results):
+	"""
+	发送消息给kafka
+	"""
+	client = KafkaClient(hosts="10.169.152.113:9092, 10.169.152.109:9092, 10.30.192.98:9092")
+
+	topic = client.topics['dev-dataetl-articlefilter'.encode('utf-8')]
+
+	with topic.get_producer() as producer:
+		for result in results:
+			message = {"title": result['title'], "abstracts": result['abstract'], "source": result['source'],
+					   "htmls": result['htmls'], "create_time": str(result['create_time']), "image_thumbnail": result['image_thumbnail'], "image_list": result['image_list'],
+					   "content": result['content'], "display_url": result['display_url'], "crawler_time": result['crawler_time']}
+			message_std = json.dumps(message, ensure_ascii=False)
+
+			producer.produce(message_std.encode('utf-8'))
+
 def engine(page, proxy):
 	"""
 	不停刷新，不停爬数据
@@ -425,8 +444,10 @@ def engine(page, proxy):
 	dsi = DownloadSaveImage()
 	print("------正在爬取第{0}页文章，共{1}个------".format(page, len(results)))
 	results_more = parse_article(results, proxy, dsi)
-	print("------正在存储第{0}页文章，共{1}个------".format(page, len(results)))
-	save(results_more)
+	# print("------正在存储第{0}页文章，共{1}个------".format(page, len(results)))
+	# save(results_more)
+	print("------正在发送第{0}页文章，共{1}个------".format(page, len(results)))
+	send_kafka(results_more)
 
 
 # 图片存储问题，路径映射

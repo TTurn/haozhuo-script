@@ -2,30 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a4bfeded-e70a-48c2-a752-ba80b5c53b7b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/filter_hyperlink_subjective.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/filter_promotion_html.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/bayes_classifier/document_classify.py" afterPath="$PROJECT_DIR$/toutiao_crawler/bayes_classifier/document_classify.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/bayes_classifier/sample_dict_builder.py" afterPath="$PROJECT_DIR$/toutiao_crawler/bayes_classifier/sample_dict_builder.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/bayes_classifier/tf_idf_feat_filter.py" afterPath="$PROJECT_DIR$/toutiao_crawler/bayes_classifier/tf_idf_feat_filter.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/bayes_classifier/transfer_samples.py" afterPath="$PROJECT_DIR$/toutiao_crawler/bayes_classifier/transfer_samples.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/data/news_promotion_part.txt" afterPath="$PROJECT_DIR$/toutiao_crawler/data/news_promotion_part.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/data/word_dict" afterPath="$PROJECT_DIR$/toutiao_crawler/data/word_dict" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/get_proxy.py" afterPath="$PROJECT_DIR$/toutiao_crawler/get_proxy.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/image_save/download_save_image.py" afterPath="$PROJECT_DIR$/toutiao_crawler/image_save/download_save_image.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/select_proxy.py" afterPath="$PROJECT_DIR$/toutiao_crawler/select_proxy.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/simhash_unique/content_to_fingerprint.py" afterPath="$PROJECT_DIR$/toutiao_crawler/simhash_unique/content_to_fingerprint.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/add_class_label.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/add_class_label.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/add_comment_number.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/add_comment_number.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/add_image_url.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/add_image_url.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/count_disease_label.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/count_disease_label.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/extract_samples.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/extract_samples.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/extract_users_news.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/extract_users_news.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/filter_ad.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/filter_ad.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/filter_conference.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/filter_conference.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/filter_promotion.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/filter_promotion.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/filter_short.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/filter_short.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/kafka_send_mes.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/kafka_send_mes.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/toutiao_app_hyq.py" afterPath="$PROJECT_DIR$/toutiao_crawler/toutiao_app_hyq.py" />
     </list>
@@ -88,26 +65,10 @@
       <file leaf-file-name="toutiao_app_hyq.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/toutiao_crawler/toutiao_app_hyq.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="828">
-              <caret line="447" column="15" lean-forward="false" selection-start-line="447" selection-start-column="15" selection-end-line="447" selection-end-column="15" />
+            <state relative-caret-position="476">
+              <caret line="434" column="0" lean-forward="true" selection-start-line="434" selection-start-column="0" selection-end-line="434" selection-end-column="0" />
               <folding>
                 <element signature="e#175#190#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="filter_hyperlink_subjective.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/toutiao_crawler/test_offline/filter_hyperlink_subjective.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1562">
-              <caret line="73" column="118" lean-forward="false" selection-start-line="73" selection-start-column="4" selection-end-line="73" selection-end-column="118" />
-              <folding>
-                <element signature="e#182#196#0" expanded="true" />
-                <marker date="1498197629000" expanded="true" signature="426:476" ph="select id fr... toutiao_app_combine_unique_20170622" />
-                <marker date="1498197629000" expanded="true" signature="591:648" ph="select id, h... toutiao_app_combine_unique_20170622" />
-                <marker date="1498197629000" expanded="true" signature="1580:1641" ph="delete from " />
-                <marker date="1498197629000" expanded="true" signature="2893:2964" ph="update touti... " />
               </folding>
             </state>
           </provider>
@@ -116,40 +77,13 @@
       <file leaf-file-name="kafka_send_mes.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/toutiao_crawler/test_offline/kafka_send_mes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="19" column="25" lean-forward="false" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
+            <state relative-caret-position="748">
+              <caret line="53" column="49" lean-forward="true" selection-start-line="53" selection-start-column="12" selection-end-line="53" selection-end-column="49" />
               <folding>
-                <marker date="1498197395000" expanded="true" signature="537:683" ph="select title... toutiao_app_combine_unique_20170608" />
-                <marker date="1498197395000" expanded="true" signature="537:699" ph="select title... toutiao_app_combine_unique_20170623" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/toutiao_crawler/test.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="17" column="17" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="23" />
-              <folding>
-                <element signature="e#16#25#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="filter_promotion_html.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/toutiao_crawler/test_offline/filter_promotion_html.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1518">
-              <caret line="71" column="26" lean-forward="false" selection-start-line="71" selection-start-column="26" selection-end-line="71" selection-end-column="26" />
-              <folding>
-                <element signature="e#52#66#0" expanded="true" />
-                <marker date="1498196055000" expanded="true" signature="309:365" ph="select id, h... toutiao_app_combine_unique_20170620" />
-                <marker date="1498196055000" expanded="true" signature="309:456" ph="select id, h... toutiao_app_combine_unique_20170622" />
-                <marker date="1498196055000" expanded="true" signature="309:559" ph="select id, h... toutiao_app_combine_unique_20170622" />
-                <marker date="1498196055000" expanded="true" signature="1739:1780" ph="update touti... " />
-                <marker date="1498196055000" expanded="true" signature="1739:1810" ph="update touti... " />
+                <element signature="e#17#48#0" expanded="true" />
+                <marker date="1498201986000" expanded="true" signature="521:675" ph="select title... toutiao_app_combine_unique_20170608" />
+                <marker date="1498201986000" expanded="true" signature="521:691" ph="select title... toutiao_app_combine_unique_20170623" />
+                <marker date="1498201986000" expanded="true" signature="1263:1313" ph="select id fr... toutiao_app_combine_unique_20170623" />
               </folding>
             </state>
           </provider>
@@ -272,8 +206,8 @@
         <option value="$PROJECT_DIR$/toutiao_crawler/bayes_classifier/transfer_samples.py" />
         <option value="$PROJECT_DIR$/toutiao_crawler/test_offline/filter_promotion_html.py" />
         <option value="$PROJECT_DIR$/toutiao_crawler/test.py" />
-        <option value="$PROJECT_DIR$/toutiao_crawler/test_offline/kafka_send_mes.py" />
         <option value="$PROJECT_DIR$/toutiao_crawler/test_offline/filter_hyperlink_subjective.py" />
+        <option value="$PROJECT_DIR$/toutiao_crawler/test_offline/kafka_send_mes.py" />
         <option value="$PROJECT_DIR$/toutiao_crawler/toutiao_app_hyq.py" />
       </list>
     </option>
@@ -303,7 +237,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -386,6 +319,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -777,9 +711,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30085197" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30724174" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32178217" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32970297" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -804,25 +738,25 @@
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32178217" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32970297" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32970297" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32772276" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39638555" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3009901" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28540772" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42772278" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32970297" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5891089" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30724174" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32871288" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32673267" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46024096" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Salesforce" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30891088" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Salesforce" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32970297" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1016,12 +950,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="814">
           <caret line="41" column="88" lean-forward="false" selection-start-line="37" selection-start-column="4" selection-end-line="41" selection-end-column="88" />
-          <folding>
-            <marker date="1498185846000" expanded="true" signature="341:402" ph="select id, d... toutiao_app_combine_unique_20170616" />
-            <marker date="1498185846000" expanded="true" signature="341:402" ph="select id, d... toutiao_app_combine_unique_20170616" />
-            <marker date="1498185846000" expanded="true" signature="341:402" ph="select id, d... toutiao_app_combine_unique_20170616" />
-            <marker date="1498185846000" expanded="true" signature="1310:1350" ph="UPDATE touti... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1043,13 +971,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="37" column="31" lean-forward="false" selection-start-line="37" selection-start-column="18" selection-end-line="37" selection-end-column="31" />
-          <folding>
-            <marker date="1498185845000" expanded="true" signature="319:380" ph="select id, d... toutiao_app_combine_unique_20170608" />
-            <marker date="1498185845000" expanded="true" signature="319:380" ph="select id, d... toutiao_app_combine_unique_20170616" />
-            <marker date="1498185845000" expanded="true" signature="1218:1258" ph="UPDATE touti... " />
-            <marker date="1498185845000" expanded="true" signature="1231:1266" ph="UPDATE touti... " />
-            <marker date="1498185845000" expanded="true" signature="1231:1268" ph="UPDATE touti... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1058,9 +979,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
           <caret line="7" column="24" lean-forward="false" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
-          <folding>
-            <marker date="1498185846000" expanded="true" signature="410:464" ph="select conte... toutiao_app_combine_unique_20170620" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1068,13 +986,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1078">
           <caret line="49" column="63" lean-forward="true" selection-start-line="48" selection-start-column="8" selection-end-line="49" selection-end-column="63" />
-          <folding>
-            <element signature="e#74#88#0" expanded="false" />
-            <marker date="1498185845000" expanded="true" signature="305:360" ph="select id, h... toutiao_app_combine_unique_20170616" />
-            <marker date="1498185845000" expanded="true" signature="305:361" ph="select id, h... toutiao_app_combine_unique_20170620" />
-            <marker date="1498185845000" expanded="true" signature="1116:1157" ph="UPDATE touti... " />
-            <marker date="1498185845000" expanded="true" signature="1157:1213" ph="UPDATE touti... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1082,10 +993,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="44">
           <caret line="2" column="18" lean-forward="false" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
-          <folding>
-            <element signature="e#44#58#0" expanded="false" />
-            <marker date="1498185845000" expanded="true" signature="288:346" ph="select displ... toutiao_app_combine_unique_20170608" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1093,10 +1000,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
           <caret line="8" column="25" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="8" selection-end-column="25" />
-          <folding>
-            <element signature="e#39#53#0" expanded="false" />
-            <marker date="1498185846000" expanded="true" signature="438:505" ph="select conte... toutiao_app_combine_unique_20170620" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1126,10 +1029,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="308">
           <caret line="39" column="23" lean-forward="false" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
-          <folding>
-            <marker date="1498185845000" expanded="true" signature="387:445" ph="select id, c... toutiao_app_combine_unique_20170620" />
-            <marker date="1498185845000" expanded="true" signature="1189:1235" ph="delete from " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1159,13 +1058,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1239">
           <caret line="87" column="12" lean-forward="true" selection-start-line="87" selection-start-column="12" selection-end-line="87" selection-end-column="12" />
-          <folding>
-            <marker date="1498185845000" expanded="true" signature="298:362" ph="select id, c... toutiao_app_combine_unique_20170616" />
-            <marker date="1498185845000" expanded="true" signature="298:363" ph="select id, c... toutiao_app_combine_unique_20170620" />
-            <marker date="1498185845000" expanded="true" signature="298:411" ph="select id, c... toutiao_app_combine_unique_20170622" />
-            <marker date="1498185845000" expanded="true" signature="940:981" ph="UPDATE touti... " />
-            <marker date="1498185845000" expanded="true" signature="940:1025" ph="UPDATE touti... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1173,15 +1065,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="484">
           <caret line="97" column="56" lean-forward="true" selection-start-line="97" selection-start-column="56" selection-end-line="97" selection-end-column="56" />
-          <folding>
-            <marker date="1498185845000" expanded="true" signature="299:364" ph="select id, t... toutiao_app_combine_unique_20170620" />
-            <marker date="1498185845000" expanded="true" signature="299:433" ph="select id, c... toutiao_app_combine_unique_20170622" />
-            <marker date="1498185845000" expanded="true" signature="2173:2219" ph="delete from " />
-            <marker date="1498185845000" expanded="true" signature="2173:2234" ph="delete from " />
-            <marker date="1498185845000" expanded="true" signature="2525:2566" ph="update touti... " />
-            <marker date="1498185845000" expanded="true" signature="2525:2610" ph="update touti... " />
-            <marker date="1498185845000" expanded="true" signature="2531:2566" ph="delete from " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1224,21 +1107,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/toutiao_crawler/test_offline/kafka_send_mes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="19" column="25" lean-forward="false" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
-          <folding>
-            <marker date="1498197395000" expanded="true" signature="537:683" ph="select title... toutiao_app_combine_unique_20170608" />
-            <marker date="1498197395000" expanded="true" signature="537:699" ph="select title... toutiao_app_combine_unique_20170623" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/toutiao_crawler/test_offline/filter_hyperlink_subjective.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1562">
-          <caret line="73" column="118" lean-forward="false" selection-start-line="73" selection-start-column="4" selection-end-line="73" selection-end-column="118" />
+        <state relative-caret-position="-8">
+          <caret line="30" column="17" lean-forward="false" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
           <folding>
             <element signature="e#182#196#0" expanded="true" />
             <marker date="1498197629000" expanded="true" signature="426:476" ph="select id fr... toutiao_app_combine_unique_20170622" />
@@ -1249,10 +1121,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/toutiao_crawler/test_offline/kafka_send_mes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="748">
+          <caret line="53" column="49" lean-forward="true" selection-start-line="53" selection-start-column="12" selection-end-line="53" selection-end-column="49" />
+          <folding>
+            <element signature="e#17#48#0" expanded="true" />
+            <marker date="1498201986000" expanded="true" signature="521:675" ph="select title... toutiao_app_combine_unique_20170608" />
+            <marker date="1498201986000" expanded="true" signature="521:691" ph="select title... toutiao_app_combine_unique_20170623" />
+            <marker date="1498201986000" expanded="true" signature="1263:1313" ph="select id fr... toutiao_app_combine_unique_20170623" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/toutiao_crawler/toutiao_app_hyq.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="828">
-          <caret line="447" column="15" lean-forward="false" selection-start-line="447" selection-start-column="15" selection-end-line="447" selection-end-column="15" />
+        <state relative-caret-position="476">
+          <caret line="434" column="0" lean-forward="true" selection-start-line="434" selection-start-column="0" selection-end-line="434" selection-end-column="0" />
           <folding>
             <element signature="e#175#190#0" expanded="true" />
           </folding>

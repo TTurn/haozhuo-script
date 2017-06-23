@@ -6,43 +6,54 @@ import json
 
 def get_message(id):
 	"""
-	{
-  "title": "string",
-  "keywords": "string",
+	{"title": "string",
   "abstracts": "string",
-  "content" : "string",
   "source": "string",
-  "display_url": "string",
   "htmls": "string",
-"source":"string",
   "create_time": "time",
-  "crawler_time": "time",
-  "fingerprint": "empty"}
+  "image_thumbnail": "string",
+  "image_list": "string",
+  "content": "string",
+  "display_url": "string",
+  "crawler_time": "time"}
 	"""
 	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler',
 						   charset='utf8')
 	cursor = conn.cursor()
-	sql = "select title, keywords, abstract, content, source, htmls, create_time, crawler_time, information_labels_ids from toutiao_app_combine_unique_20170623 where id = %s"
+	sql = "select title, abstract, source, htmls, create_time, image_thumbnail, image_list, content, display_url, crawler_time from toutiao_app_combine_unique_20170623 where id = %s"
 	cursor.execute(sql, id)
 	conn.commit()
 	result = cursor.fetchall()[0]
-	message = {"title": result[0], "keywords": result[1], "abstracts": result[2], "content": result[3], "source": result[4],
-			   "htmls": result[5], "create_time": str(result[6]), "crawler_time": str(result[7]), "information_labels_ids": result[8]}
+	message = {"title": result[0], "abstracts": result[1], "source": result[2],
+			   "htmls": result[3], "create_time": str(result[4]), "image_thumbnail": result[5], "image_list": result[6], "content": result[7], "display_url": result[8], "crawler_time": result[9]}
 
 	return json.dumps(message, ensure_ascii=False)
 
-def engine():
-	test_ids = [29777, 2150, 37666, 1626, 29777, 2150, 37666, 1626, 29777, 2150, 37666, 1626]
-	client = KafkaClient(hosts="datanode1:9092,datanode2:9092,datanode3:9092")
+def get_id_list():
+	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler',
+						   charset='utf8')
+	cursor = conn.cursor()
+	sql = "select id from toutiao_app_combine_unique_20170623"
+	cursor.execute(sql)
+	conn.commit()
+	results = cursor.fetchall()[0]
+	id_list = [result[0] for result in results]
+
+	return id_list
+
+def engine(id_list):
+	client = KafkaClient(hosts="10.169.152.113:9092, 10.169.152.109:9092, 10.30.192.98:9092")
 
 	topic = client.topics['dev-dataetl-articlefilter'.encode('utf-8')]
 
 	with topic.get_producer() as producer:
-		for id in test_ids:
-			print("---{0}---".format(id))
+		for i in range(len(id_list)):
+			id = id_list[i]
+			print("---正在发送第{0}篇文章给kafka---".format(i+1))
 			mes = get_message(id)
 			producer.produce(mes.encode('utf-8'))
 
 
 if __name__ == "__main__":
-	engine()
+	id_list = get_id_list()
+	engine(id_list)
