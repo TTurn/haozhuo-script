@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a4bfeded-e70a-48c2-a752-ba80b5c53b7b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/toutiao_crawler/bayes_classifier/dc_demo.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/toutiao_crawler/data/dc_demo" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/transfer_html_content.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/toutiao_crawler/toutiao_app_hyq_android.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/toutiao_crawler/.idea/simhash_unique_test.py" afterPath="$PROJECT_DIR$/toutiao_crawler/simhash_unique/simhash_unique_test.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/toutiao_crawler/bayes_classifier/transfer_samples.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/transfer_samples.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/add_image_url.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/add_image_url.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/extract_samples.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/extract_samples.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/test_offline/kafka_send_mes.py" afterPath="$PROJECT_DIR$/toutiao_crawler/test_offline/kafka_send_mes.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toutiao_crawler/toutiao_app_hyq.py" afterPath="$PROJECT_DIR$/toutiao_crawler/toutiao_app_hyq.py" />
-    </list>
+    <list default="true" id="a4bfeded-e70a-48c2-a752-ba80b5c53b7b" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -114,8 +101,8 @@
       <file leaf-file-name="39health_pc_twl.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/39_crawler/39health_pc_twl.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="538">
-              <caret line="224" column="25" lean-forward="true" selection-start-line="224" selection-start-column="25" selection-end-line="224" selection-end-column="25" />
+            <state relative-caret-position="340">
+              <caret line="179" column="24" lean-forward="false" selection-start-line="179" selection-start-column="15" selection-end-line="179" selection-end-column="24" />
               <folding>
                 <element signature="e#176#191#0" expanded="true" />
               </folding>
@@ -714,7 +701,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32772276" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30891088" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30891088" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32970297" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46039605" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2539936" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1139,8 +1126,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/39_crawler/39health_pc_twl.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="538">
-          <caret line="224" column="25" lean-forward="true" selection-start-line="224" selection-start-column="25" selection-end-line="224" selection-end-column="25" />
+        <state relative-caret-position="340">
+          <caret line="179" column="24" lean-forward="false" selection-start-line="179" selection-start-column="15" selection-end-line="179" selection-end-column="24" />
           <folding>
             <element signature="e#176#191#0" expanded="true" />
           </folding>
