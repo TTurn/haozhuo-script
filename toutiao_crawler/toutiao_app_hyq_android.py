@@ -27,18 +27,18 @@ def download_page(proxy):
 	里面包含文章url，便于进行下一层爬取。
 	重复抓取，重复刷新。
 	"""
-	url = "https://lf.snssdk.com/api/news/feed/v53/?version_code=6.1.2&app_name=news_article&vid=644F80DA-8C14-4012-9312-AD3FD7E4771D&device_id=35432641928&channel=App%20Store&resolution=750*1334&aid=13&ab_version=132023,126063,132049,122834,130106,131380,126066,132364,126072,131619,131542,125502,125174,132469,132400,127333,130386,126059,132482,121513,132027,122948,130200,130932,131077,131207,114338,127757&ab_feature=z1&openudid=1710bbf8e661ee837482b8501c84606968eb1fc1&live_sdk_version=1.6.5&idfv=644F80DA-8C14-4012-9312-AD3FD7E4771D&ac=WIFI&os_version=10.3.1&ssmix=a&device_platform=iphone&iid=10608408767&ab_client=a1,f2,f7,e1&device_type=iPhone%206S&idfa=31856174-9926-4EE8-8230-F626A85DCC4D&LBS_status=deny&category=news_health&city=%E6%9D%AD%E5%B7%9E&concern_id=6215497895248923137&count=20&cp=559f24F5E1135q1&detail=1&image=1&language=zh-Hans-CN&last_refresh_sub_entrance_interval=3198&loc_mode=0&min_behot_time=1496309541&refer=1&strict=0&tt_from=pull"
-	# url = "https://lf.snssdk.com/api/news/feed/v53/?category=news_health&concern_id=6215497895248923137&refer=1&count=20&min_behot_time=&last_refresh_sub_entrance_interval=&loc_mode=0&tt_from=enter_auto&cp=569419a4d874dq1&iid=10291744168&device_id=36372853508&ac=wifi&channel=xiaomi&aid=13&app_name=news_article&version_code=612&version_name=6.1.2&device_platform=android&ab_version=125481%2C124685%2C126064%2C124993%2C125842%2C127421%2C126035%2C114040%2C122834%2C126065%2C125865%2C123727%2C127188%2C127130%2C126071%2C125839%2C126791%2C125503%2C125174%2C127527%2C127333%2C104321%2C126058%2C127138%2C126401%2C126526%2C126125%2C122948%2C123125%2C31244%2C127080%2C126153%2C121011%2C125527%2C126014%2C114338%2C127485%2C125065&ab_client=a1%2Cc4%2Ce1%2Cf2%2Cg2%2Cf7&ab_feature=94563%2C102749&abflag=3&ssmix=a&device_type=Redmi+Note+4&device_brand=Xiaomi&language=zh&os_api=23&os_version=6.0&uuid=862963032864841&openudid=c7ef43d7c65a8f17&manifest_version_code=612&resolution=1080*1920&dpi=480&update_version_code=6124&_rticket="
-	headers = {"Host": "lf.snssdk.com",
-			   "Accept": "*/*",
-			   # "X-SS-Cookie": "install_id=10608408767; ttreq=1$30f9a8db4a7a7b5b6945b3dd28fa6bf1289d0d83; alert_coverage=45; qh[360]=1; _ga=GA1.2.791888771.1496287081; _gid=GA1.2.2032824666.1496287081",
-			   # "tt-request-time": "1496310069163",
-			   # "Cookie": "install_id=10608408767; ttreq=1$30f9a8db4a7a7b5b6945b3dd28fa6bf1289d0d83; alert_coverage=45; qh[360]=1; _ga=GA1.2.791888771.1496287081; _gid=GA1.2.2032824666.1496287081",
-			   "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 7.0; Mi-4c MIUI/V8.2.3.0.NXKCNEC) NewsArticle/6.2.1 okhttp/3.4.1.4",
-			   "Accept-Language": "zh-Hans-CN;q=1, en-CN;q=0.9, zh-Hant-CN;q=0.8",
-			   "Accept-Encoding": "gzip, deflate",
-			   "Connection": "keep-alive"
-			   }
+	url = "http://lf.snssdk.com/api/news/feed/v54/?category=news_health&concern_id=6215497895248923137&refer=1&iid=11618873660&device_id=35388318113&ac=wifi&channel=xiaomi&aid=13&app_name=news_article&version_code=621&version_name=6.2.1&device_platform=android&ab_version=134939%2C139619%2C113836%2C140751%2C136694%2C141162%2C141780%2C122834%2C142253%2C136775%2C128826%2C134127%2C141158%2C140265%2C141942%2C139276%2C142255%2C142134%2C140593%2C125502%2C137068%2C125174%2C141765%2C142215%2C139850%2C141792%2C132480%2C140158%2C141921%2C141146%2C122948%2C140156%2C141672%2C131207%2C140885%2C114338%2C142157&ab_client=a1%2Cc4%2Ce1%2Cf2%2Cg2%2Cf7&ab_feature=102749%2C94563&abflag=3&ssmix=a&device_type=Mi-4c&device_brand=Xiaomi&language=zh&os_api=24&os_version=7.0&uuid=867830022039707&openudid=ff0554b7106aebed&manifest_version_code=621&resolution=1080*1920&dpi=480&update_version_code=6214&_rticket=1498463174843"
+	headers = {
+		"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+		"Accept-Encoding": "gzip, deflate, sdch",
+		"Accept-Language": "zh-CN,zh;q=0.8,en;q=0.6",
+		"Cache-Control": "max-age=0",
+		"Connection": "keep-alive",
+		"Cookie": "__utma=59317232.1048340270.1496211855.1496211855.1496308476.2; __utmz=59317232.1496211855.1.1.utmcsr=link.zhihu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; _ga=GA1.2.1700145509.1496329542",
+		"Host": "lf.snssdk.com",
+		"Upgrade-Insecure-Requests": "1",
+		"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+	}
 	# time.sleep(3)
 	try:
 		# r = requests.get(url, headers=headers, proxies=proxy, timeout=10)

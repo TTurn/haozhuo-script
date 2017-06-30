@@ -1,6 +1,6 @@
 # coding: utf-8
 """
-抽取样本写入excel给运营同学审核
+抽取样本写入excel给运营同学审
 """
 
 import pymysql

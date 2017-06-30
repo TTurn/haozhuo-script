@@ -33,6 +33,9 @@ def extract_image(html):
 	for _ in soup.find_all('img'):
 		image_list.append(_['src'])
 
+	if len(image_list) > 3:
+		image_list = image_list[:3]
+
 	return image_list
 
 def save_image(ids, htmls):

@@ -6,6 +6,7 @@ Created on 2017-06-08
 """
 
 import pymysql
+from random import sample
 
 def get_samples():
 	"""
@@ -22,7 +23,7 @@ def get_samples():
 	cursor.close()
 	conn.close()
 
-	return results
+	return sample(results, 100)
 
 def load_samples(results):
 	"""
@@ -42,7 +43,7 @@ def load_samples(results):
 	cursor = conn.cursor()
 
 	# 暂时导入1000篇文章
-	for i in range(1000):
+	for i in range(100):
 		result = results[i]
 		title = result[0]
 		abstract = result[1]
