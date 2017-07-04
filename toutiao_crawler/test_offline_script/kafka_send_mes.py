@@ -28,8 +28,9 @@ def get_message(id):
 	result = cursor.fetchall()[0]
 
 	# create_time归一化！！
-	if len(result[4]) < 19:
-		result[4] = result[4] + ":00"
+	# result[4] = str(result[4])
+	# if len(result[4]) < 19:
+	# 	result[4] = result[4] + ":00"
 
 	message = {"title": result[0], "abstracts": result[1], "source": result[2],
 			   "htmls": result[3], "create_time": str(result[4]), "image_thumbnail": result[5], "image_list": result[6], "content": result[7], "display_url": result[8], "crawler_time": str(result[9])}
@@ -40,13 +41,14 @@ def get_id_list():
 	conn = pymysql.connect(host='116.62.106.69', port=3306, user='datag', passwd='yjkdatag', db='news_crawler',
 						   charset='utf8')
 	cursor = conn.cursor()
-	sql = "select id from toutiao_app_combine_unique_20170623 where image_thumbnail <> '' and create_time > '2017-05-16' and create_time < '2017-05-17'"
+	sql = "select id from toutiao_app_combine_unique_20170623 where image_thumbnail <> ''"
 	cursor.execute(sql)
 	conn.commit()
 	results = cursor.fetchall()
 	id_list = [result[0] for result in results]
 
-	return sample(id_list, len(id_list))
+	# return sample(id_list, 1000)
+	return id_list
 
 def engine(id_list):
 	# client = KafkaClient(hosts="10.169.152.113:9092, 10.169.152.109:9092, 10.30.192.98:9092")
@@ -61,8 +63,8 @@ def engine(id_list):
 			# time.sleep(1)
 			mes = get_message(id)
 			producer.produce(mes.encode('utf-8'))
-			if i == 15:
-				break
+			# if i == 15:
+			# 	break
 
 
 if __name__ == "__main__":

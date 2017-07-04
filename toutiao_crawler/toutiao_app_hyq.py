@@ -120,7 +120,7 @@ def get_comment_count(soup):
 	return False
 
 def judge_by_title(title):
-	pattern = re.compile("执业|执医|执照|狗|猪|通知|培训|养殖")
+	pattern = re.compile("执业|执医|执照|狗|猪|通知|培训|养殖|多少钱")
 
 	return re.search(pattern, title)
 
@@ -202,13 +202,13 @@ def sub_image_interlink_html(html):
 	return str(soup)
 
 def judge_html_promotion(html):
-	pattern = re.compile("热线|微信|公众号|头条号|公号|公-众-号|微 信|二维码|关注|点击|咨询|联系方式|订阅|授权|转载|转自|邮箱|访问|网址|网站|文章来源|链接|报名|网 址|出处|官网|下载地址|原文|图片来源|图片来自|文章来自|了解更多|欢迎登录|为您推荐|详情|参考文献|精心推荐|详细新闻|中康体检|文章推荐|参考资料|文献参考|电话|版权")
+	pattern = re.compile("热线|微信|公众号|头条号|公号|公-众-号|微 信|二维码|关注|点击|咨询|联系方式|订阅|授权|转载|转自|邮箱|访问|网址|网站|文章来源|链接|报名|网 址|出处|官网|下载地址|原文|图片来源|图片来自|文章来自|了解更多|欢迎登录|为您推荐|详情|参考文献|精心推荐|详细新闻|中康体检|文章推荐|参考资料|文献参考|电话|版权|文图：|编辑：")
 	return re.search(pattern, html)
 
 
 def sub_html_promotion(html):
 	soup = BeautifulSoup(html, 'lxml')
-	promotion_list = ["热线", "微信", "公众号", "头条号", "公号", "公-众-号", "微 信", "关注", "二维码", "联系方式", "订阅", "点击", "咨询", "授权", "转载", "转自", "邮箱", "访问", "网址", "网站", "文章来源", "报名", "链接", "网 址", "出处", "官网", "下载地址", "原文", "图片来源", "图片来自", "文章来自", "了解更多", "欢迎登录", "为您推荐", "详情", "参考文献", "精心推荐", "详细新闻", "中康体检", "文章推荐", "参考资料", "文献参考", "电话", "版权"]
+	promotion_list = ["热线", "微信", "公众号", "头条号", "公号", "公-众-号", "微 信", "关注", "二维码", "联系方式", "订阅", "点击", "咨询", "授权", "转载", "转自", "邮箱", "访问", "网址", "网站", "文章来源", "报名", "链接", "网 址", "出处", "官网", "下载地址", "原文", "图片来源", "图片来自", "文章来自", "了解更多", "欢迎登录", "为您推荐", "详情", "参考文献", "精心推荐", "详细新闻", "中康体检", "文章推荐", "参考资料", "文献参考", "电话", "版权", "文图：", "编辑："]
 
 	# 包含推广，则整段整段删除
 	for _ in soup.find_all(re.compile("p|h1")):
@@ -398,6 +398,10 @@ def parse_article(results, proxy, dsi):
 
 			# 最后把content换成html的
 			results[i]['content'] = BeautifulSoup(results[i]['htmls'], 'lxml').get_text()
+
+			# 空摘要的要添加上
+			if len(results[i]['abstract']) < 20:
+				results[i]['abstract'] = results[i]['content'][:50]
 
 		except:
 			print(results[i]['display_url'] + "  为问答或广告")

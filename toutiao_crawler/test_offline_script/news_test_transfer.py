@@ -467,7 +467,7 @@ def engine(url_list, proxy):
 # 图片存储问题，路径映射
 # 去重
 if __name__ == "__main__":
-	# url_list = get_test_url_list()
-	url_list = ['http://www.toutiao.com/a6409792967637418241/']
+	url_list = get_test_url_list()
+	# url_list = ['http://www.toutiao.com/a6409792967637418241/']
 	engine(url_list, "")
 

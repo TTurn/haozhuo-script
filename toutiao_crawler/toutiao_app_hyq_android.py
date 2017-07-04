@@ -120,7 +120,7 @@ def get_comment_count(soup):
 	return False
 
 def judge_by_title(title):
-	pattern = re.compile("执业|执医|执照|狗|猪|通知|培训|养殖")
+	pattern = re.compile("执业|执医|执照|狗|猪|通知|培训|养殖|多少钱")
 
 	return re.search(pattern, title)
 
