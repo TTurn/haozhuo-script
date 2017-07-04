@@ -1,17 +1,14 @@
 # coding: utf-8
 """
-Created on 2017-05-30
-@author: He Youqiang
-@brief: crawl health news from Toutiao app and save them to MySQL
-@version: Anaconda Python 3.6, MySQL 5.7
+和测试方合作发送测试资讯，测试消息流程是否跑通，
+测试资讯清洗是否实现
 """
 
+import xlrd
 import requests
 import json
 from bs4 import BeautifulSoup
 import pymysql
-from select_proxy import SelectProxy
-from get_proxy import GetProxy
 import time
 import multiprocessing
 import re
@@ -21,32 +18,13 @@ from image_save.download_save_image import DownloadSaveImage
 from pykafka import KafkaClient
 
 
-def download_page(proxy):
-	"""
-	根据Charles抓包数据，下载页面数据，转换为json格式，
-	里面包含文章url，便于进行下一层爬取。
-	重复抓取，重复刷新。
-	"""
-	url = "http://lf.snssdk.com/api/news/feed/v54/?category=news_health&concern_id=6215497895248923137&refer=1&iid=11618873660&device_id=35388318113&ac=wifi&channel=xiaomi&aid=13&app_name=news_article&version_code=621&version_name=6.2.1&device_platform=android&ab_version=134939%2C139619%2C113836%2C140751%2C136694%2C141162%2C141780%2C122834%2C142253%2C136775%2C128826%2C134127%2C141158%2C140265%2C141942%2C139276%2C142255%2C142134%2C140593%2C125502%2C137068%2C125174%2C141765%2C142215%2C139850%2C141792%2C132480%2C140158%2C141921%2C141146%2C122948%2C140156%2C141672%2C131207%2C140885%2C114338%2C142157&ab_client=a1%2Cc4%2Ce1%2Cf2%2Cg2%2Cf7&ab_feature=102749%2C94563&abflag=3&ssmix=a&device_type=Mi-4c&device_brand=Xiaomi&language=zh&os_api=24&os_version=7.0&uuid=867830022039707&openudid=ff0554b7106aebed&manifest_version_code=621&resolution=1080*1920&dpi=480&update_version_code=6214&_rticket=1498463174843"
-	headers = {
-		"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-		"Accept-Encoding": "gzip, deflate, sdch",
-		"Accept-Language": "zh-CN,zh;q=0.8,en;q=0.6",
-		"Cache-Control": "max-age=0",
-		"Connection": "keep-alive",
-		"Cookie": "__utma=59317232.1048340270.1496211855.1496211855.1496308476.2; __utmz=59317232.1496211855.1.1.utmcsr=link.zhihu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; _ga=GA1.2.1700145509.1496329542",
-		"Host": "lf.snssdk.com",
-		"Upgrade-Insecure-Requests": "1",
-		"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
-	}
-	# time.sleep(3)
-	try:
-		# r = requests.get(url, headers=headers, proxies=proxy, timeout=10)
-		r = requests.get(url, headers=headers, timeout=10)
-	except requests.exceptions.ConnectionError:
-		time.sleep(600)
+def get_test_url_list():
+	data = xlrd.open_workbook('/Users/mountain/Desktop/haozhuo/今日头条测试资讯0703.xlsx')
+	table = data.sheets()[0]
+	url_list = table.col_values(0)
+	url_list_clean = [url for url in url_list if url]
 
-	return json.loads(r.content)
+	return url_list_clean
 
 def download_article(url, proxy):
 	"""
@@ -72,27 +50,32 @@ def download_article(url, proxy):
 		print(url + "  爬取超时")
 		return False
 
-def parse_page(content):
+def parse_page(article_htmls, url_list):
 	"""
 	根据页面得到的json格式数据，抽取title,
 	keywords, abstract, display_url, source等字段
 	"""
 	results = []
-	for data in content['data']:
+	for i in range(len(article_htmls)):
+		url = url_list[i]
+		article_html = article_htmls[i]
+
 		result = {}
 		keys = ['title', 'keywords', 'abstract', 'display_url', 'source']
-		article =json.loads(data['content'])
+		soup = BeautifulSoup(article_html, 'lxml')
 
 		# 问答类、广告类暂时不要
 		try:
-			if article['source'] == "头条问答" or 'http://toutiao.com' not in article['display_url']:
-				continue
+			result['source'] = soup.find_all(class_="articleInfo")[0].get_text().split()[0].strip()
+			result['keywords'] = ""
+			result['abstract'] = ""
+			result['display_url'] = url
+			result['title'] = soup.find_all(class_="article-title")[0].get_text().strip()
+
 		except:
 			print("页面解析有错误")
 			continue
 
-		for key in keys:
-			result[key] = article[key] if key in article else " "
 		results.append(result)
 
 	return results
@@ -108,6 +91,7 @@ def get_image_list(soup):
 		image_list = image_list[:3]
 
 	return image_list
+
 
 def get_comment_count(soup):
 	for tag in soup.find_all("script"):
@@ -438,12 +422,15 @@ def send_kafka(results):
 	"""
 	发送消息给kafka
 	"""
-	client = KafkaClient(hosts="10.169.152.113:9092, 10.169.152.109:9092, 10.30.192.98:9092")
+	# client = KafkaClient(hosts="10.169.152.113:9092, 10.169.152.109:9092, 10.30.192.98:9092")
+	client = KafkaClient(hosts="192.168.1.153:9092")
 
 	topic = client.topics['dev-dataetl-articlefilter'.encode('utf-8')]
 
 	with topic.get_producer() as producer:
-		for result in results:
+		for i in range(len(results)):
+			print("正在发送第{0}篇消息".format(i+1))
+			result = results[i]
 			# 如果图片为空，不发送卡夫卡消息，但是数据库仍然要存
 			if result['image_thumbnail'] == "":
 				break
@@ -456,37 +443,31 @@ def send_kafka(results):
 
 			producer.produce(message_std.encode('utf-8'))
 
-def engine(page, proxy):
+def engine(url_list, proxy):
 	"""
 	不停刷新，不停爬数据
 	"""
-	content = download_page(proxy)
-	results = parse_page(content)
+
+	article_htmls = []
+	for url in url_list:
+		article_htmls.append(download_article(url, ""))
+
+	results = parse_page(article_htmls, url_list)
+	# results = parse_page(article_htmls, url_list)
+
 	# if len(results) == 0:
 	# 	continue
+
 	dsi = DownloadSaveImage()
-	print("------正在爬取第{0}页文章，共{1}个------".format(page, len(results)))
 	results_more = parse_article(results, proxy, dsi)
-	print("------正在存储第{0}页文章，共{1}个------".format(page, len(results)))
 	save(results_more)
-	print("------正在发送第{0}页文章，共{1}个------".format(page, len(results)))
 	send_kafka(results_more)
 
 
 # 图片存储问题，路径映射
 # 去重
 if __name__ == "__main__":
-	# selectproxy = SelectProxy(100)
-	# selectproxy.engine()
-	get_proxy = GetProxy()
-	pool = multiprocessing.Pool(multiprocessing.cpu_count())
+	# url_list = get_test_url_list()
+	url_list = ['http://www.toutiao.com/a6409792967637418241/']
+	engine(url_list, "")
 
-	# 改造成多进程
-	for page in range(10000):
-		# engine(page)
-		if page % 25 == 0:
-			proxy = get_proxy.get_proxy()
-		engine(page, proxy)
-		# pool.apply_async(engine, (page, proxy))
-	pool.close()
-	pool.join()

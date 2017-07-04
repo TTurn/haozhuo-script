@@ -103,6 +103,10 @@ def get_image_list(soup):
 	for _ in soup.find_all('img'):
 		image_list.append(_['src'])
 
+	# 图片不要发太多，少发几个！！
+	if len(image_list) > 3:
+		image_list = image_list[:3]
+
 	return image_list
 
 def get_comment_count(soup):
@@ -116,7 +120,7 @@ def get_comment_count(soup):
 	return False
 
 def judge_by_title(title):
-	pattern = re.compile("执业|执医|执照|狗|猪|通知|培训")
+	pattern = re.compile("执业|执医|执照|狗|猪|通知|培训|养殖")
 
 	return re.search(pattern, title)
 
@@ -195,7 +199,7 @@ def sub_image_interlink_html(html):
 	for _ in soup.find_all(class_=re.compile("pgc.*")):
 		_.decompose()
 
-	return soup
+	return str(soup)
 
 def judge_html_promotion(html):
 	pattern = re.compile("热线|微信|公众号|头条号|公号|公-众-号|微 信|二维码|关注|点击|咨询|联系方式|订阅|授权|转载|转自|邮箱|访问|网址|网站|文章来源|链接|报名|网 址|出处|官网|下载地址|原文|图片来源|图片来自|文章来自|了解更多|欢迎登录|为您推荐|详情|参考文献|精心推荐|详细新闻|中康体检|文章推荐|参考资料|文献参考|电话|版权")
@@ -264,6 +268,11 @@ def parse_article(results, proxy, dsi):
 		try:
 			# 常规字段添加
 			results[i]['create_time'] = soup.find_all(class_='time')[0].get_text()
+
+			# create_time归一化！！
+			if len(results[i]['create_time']) < 19:
+				results[i]['create_time'] = results[i]['create_time'] + ":00"
+
 			results[i]['content'] = soup.find_all(class_='article-content')[0].get_text()
 			results[i]['htmls'] = str(soup.find_all(class_='article-content')[0])
 			news_class = soup.find_all(ga_event="click_channel")[0].get_text()
@@ -435,6 +444,10 @@ def send_kafka(results):
 
 	with topic.get_producer() as producer:
 		for result in results:
+			# 如果图片为空，不发送卡夫卡消息，但是数据库仍然要存
+			if result['image_thumbnail'] == "":
+				break
+
 			result['crawler_time'] = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
 			message = {"title": result['title'], "abstracts": result['abstract'], "source": result['source'],
 					   "htmls": result['htmls'], "create_time": str(result['create_time']), "image_thumbnail": result['image_thumbnail'], "image_list": result['image_list'],
