@@ -447,7 +447,9 @@ def send_kafka(results):
 	topic = client.topics['dev-dataetl-articlefilter'.encode('utf-8')]
 
 	with topic.get_producer() as producer:
-		for result in results:
+		for i in range(len(results)):
+			result = results[i]
+			print("正在发送第{0}篇文章".format(i+1))
 			# 如果图片为空，不发送卡夫卡消息，但是数据库仍然要存
 			if result['image_thumbnail'] == "":
 				break
@@ -469,11 +471,11 @@ def engine(page, proxy):
 	# if len(results) == 0:
 	# 	continue
 	dsi = DownloadSaveImage()
-	print("------正在爬取第{0}页文章，共{1}个------".format(page, len(results)))
+	print("------正在爬取第{0}页文章，共{1}个------".format(page+1, len(results)))
 	results_more = parse_article(results, proxy, dsi)
-	print("------正在存储第{0}页文章，共{1}个------".format(page, len(results)))
+	print("------正在存储第{0}页文章，共{1}个------".format(page+1, len(results)))
 	save(results_more)
-	print("------正在发送第{0}页文章，共{1}个------".format(page, len(results)))
+	print("------正在发送第{0}页文章，共{1}个------".format(page+1, len(results)))
 	send_kafka(results_more)
 
 

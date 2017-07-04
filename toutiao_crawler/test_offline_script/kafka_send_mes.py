@@ -51,8 +51,8 @@ def get_id_list():
 	return id_list
 
 def engine(id_list):
-	# client = KafkaClient(hosts="10.169.152.113:9092, 10.169.152.109:9092, 10.30.192.98:9092")
-	client = KafkaClient(hosts="192.168.1.153:9092")
+	client = KafkaClient(hosts="10.169.152.113:9092, 10.169.152.109:9092, 10.30.192.98:9092")
+	# client = KafkaClient(hosts="192.168.1.153:9092")
 
 	topic = client.topics['dev-dataetl-articlefilter'.encode('utf-8')]
 

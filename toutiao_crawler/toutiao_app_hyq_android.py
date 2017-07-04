@@ -202,13 +202,13 @@ def sub_image_interlink_html(html):
 	return str(soup)
 
 def judge_html_promotion(html):
-	pattern = re.compile("热线|微信|公众号|头条号|公号|公-众-号|微 信|二维码|关注|点击|咨询|联系方式|订阅|授权|转载|转自|邮箱|访问|网址|网站|文章来源|链接|报名|网 址|出处|官网|下载地址|原文|图片来源|图片来自|文章来自|了解更多|欢迎登录|为您推荐|详情|参考文献|精心推荐|详细新闻|中康体检|文章推荐|参考资料|文献参考|电话|版权")
+	pattern = re.compile("热线|微信|公众号|头条号|公号|公-众-号|微 信|二维码|关注|点击|咨询|联系方式|订阅|授权|转载|转自|邮箱|访问|网址|网站|文章来源|链接|报名|网 址|出处|官网|下载地址|原文|图片来源|图片来自|文章来自|了解更多|欢迎登录|为您推荐|详情|参考文献|精心推荐|详细新闻|中康体检|文章推荐|参考资料|文献参考|电话|版权|文图：|编辑：")
 	return re.search(pattern, html)
 
 
 def sub_html_promotion(html):
 	soup = BeautifulSoup(html, 'lxml')
-	promotion_list = ["热线", "微信", "公众号", "头条号", "公号", "公-众-号", "微 信", "关注", "二维码", "联系方式", "订阅", "点击", "咨询", "授权", "转载", "转自", "邮箱", "访问", "网址", "网站", "文章来源", "报名", "链接", "网 址", "出处", "官网", "下载地址", "原文", "图片来源", "图片来自", "文章来自", "了解更多", "欢迎登录", "为您推荐", "详情", "参考文献", "精心推荐", "详细新闻", "中康体检", "文章推荐", "参考资料", "文献参考", "电话", "版权"]
+	promotion_list = ["热线", "微信", "公众号", "头条号", "公号", "公-众-号", "微 信", "关注", "二维码", "联系方式", "订阅", "点击", "咨询", "授权", "转载", "转自", "邮箱", "访问", "网址", "网站", "文章来源", "报名", "链接", "网 址", "出处", "官网", "下载地址", "原文", "图片来源", "图片来自", "文章来自", "了解更多", "欢迎登录", "为您推荐", "详情", "参考文献", "精心推荐", "详细新闻", "中康体检", "文章推荐", "参考资料", "文献参考", "电话", "版权", "文图：", "编辑："]
 
 	# 包含推广，则整段整段删除
 	for _ in soup.find_all(re.compile("p|h1")):
@@ -399,6 +399,10 @@ def parse_article(results, proxy, dsi):
 			# 最后把content换成html的
 			results[i]['content'] = BeautifulSoup(results[i]['htmls'], 'lxml').get_text()
 
+			# 空摘要的要添加上
+			if len(results[i]['abstract']) < 20:
+				results[i]['abstract'] = results[i]['content'][:50]
+
 		except:
 			print(results[i]['display_url'] + "  为问答或广告")
 			wrong_results.append(results[i])
@@ -443,7 +447,9 @@ def send_kafka(results):
 	topic = client.topics['dev-dataetl-articlefilter'.encode('utf-8')]
 
 	with topic.get_producer() as producer:
-		for result in results:
+		for i in range(len(results)):
+			result = results[i]
+			print("正在发送第{0}篇文章".format(i+1))
 			# 如果图片为空，不发送卡夫卡消息，但是数据库仍然要存
 			if result['image_thumbnail'] == "":
 				break
@@ -465,11 +471,11 @@ def engine(page, proxy):
 	# if len(results) == 0:
 	# 	continue
 	dsi = DownloadSaveImage()
-	print("------正在爬取第{0}页文章，共{1}个------".format(page, len(results)))
+	print("------正在爬取第{0}页文章，共{1}个------".format(page+1, len(results)))
 	results_more = parse_article(results, proxy, dsi)
-	print("------正在存储第{0}页文章，共{1}个------".format(page, len(results)))
+	print("------正在存储第{0}页文章，共{1}个------".format(page+1, len(results)))
 	save(results_more)
-	print("------正在发送第{0}页文章，共{1}个------".format(page, len(results)))
+	print("------正在发送第{0}页文章，共{1}个------".format(page+1, len(results)))
 	send_kafka(results_more)
 
 
